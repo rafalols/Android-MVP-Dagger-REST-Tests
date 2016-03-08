@@ -50,27 +50,17 @@ public class SearchFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         ButterKnife.bind(this, view);
-        Log.d(TAG, "onCreateView: test");
+
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setHint(getString(R.string.autocomplete_hint));
+
+        autocompleteFragment.setFilter(createAutocompleteFilter());
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListenerImp());
 
         return view;
-    }
-
-    @OnClick(R.id.search_view)
-    public void onSearchButtonClick(){
-        Log.d(TAG, "onSearchButtonClick: click!");
-        try {
-            Intent intent =
-                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-                            .setFilter(createAutocompleteFilter())
-                            .build(getActivity());
-            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-        } catch (GooglePlayServicesRepairableException e) {
-            // TODO: Handle the error.
-            Log.d(TAG, "onSearchButtonClick: GooglePlayServicesRepairableException " + e.getMessage());
-        } catch (GooglePlayServicesNotAvailableException e) {
-            // TODO: Handle the error.
-            Log.d(TAG, "onSearchButtonClick: GooglePlayServicesNotAvailableException " + e.getMessage());
-        }
     }
 
     @OnClick(R.id.button_position)
@@ -93,40 +83,17 @@ public class SearchFragment extends Fragment {
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                Place place = PlaceAutocomplete.getPlace(getActivity(), data);
-
-                            callback.onCitySelected(CityMapper.plateToCity(place));
-
-            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-                Status status = PlaceAutocomplete.getStatus(getActivity(), data);
-                Log.d(TAG, "onActivityResult: Result error " + status.getStatusMessage());
-
-                            callback.onError(status);
-
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                Log.d(TAG, "onActivityResult: user canceled");
-            }
-        }
-
-    }
-
-
-
     private class PlaceSelectionListenerImp implements PlaceSelectionListener {
 
         @Override
         public void onPlaceSelected(Place place) {
-
+            Log.d(TAG, "onPlaceSelected: place:" + place.getName() + "  log, lat:" + place.getLatLng().toString());
+            callback.onCitySelected(CityMapper.plateToCity(place));
         }
 
         @Override
         public void onError(Status status) {
+            Log.d(TAG, "onActivityResult: Result error " + status.getStatusMessage());
             callback.onError(status);
         }
     }

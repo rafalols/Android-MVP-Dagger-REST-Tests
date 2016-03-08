@@ -1,27 +1,17 @@
 package eu.rafalolszewski.simplyweather.views.activities;
 
-import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
-import butterknife.Bind;
 import eu.rafalolszewski.simplyweather.R;
 import eu.rafalolszewski.simplyweather.model.City;
 import eu.rafalolszewski.simplyweather.views.fragments.CurrentCityFooterFragment;
@@ -46,8 +36,8 @@ public class MainActivity extends AppCompatActivity implements SearchCallback, G
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
