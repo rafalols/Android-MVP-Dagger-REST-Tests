@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
  */
 public class StringFormatter {
 
-    public static String latLongToString(double latOrLong){
+    public static String latOrLongToString(double latOrLong){
         DecimalFormat formatter = new DecimalFormat("0.000000");
         return formatter.format(latOrLong);
     }

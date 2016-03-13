@@ -13,21 +13,17 @@
     tools:showIn="@layout/activity_main"
     >
 
-    <fragment
-        android:id="@+id/fragment_search"
-        android:name="eu.rafalolszewski.simplyweather.views.fragments.SearchFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_search"
-        />
+    <include
+        android:id="@+id/content_header"
+        layout="@layout/content_header" />
 
     <fragment
         android:id="@+id/fragment_content"
         android:name="eu.rafalolszewski.simplyweather.views.fragments.WeatherBodyFragment"
-        android:layout_below="@+id/fragment_search"
+        android:layout_below="@+id/content_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_main"
+        tools:layout="@layout/fragment_weather_body"
         />
 
     <fragment

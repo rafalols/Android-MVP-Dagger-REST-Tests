@@ -28,15 +28,15 @@ public class WeatherBodyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-        ButterKnife.bind(view);
+        View view = inflater.inflate(R.layout.fragment_weather_body, container, false);
+        ButterKnife.bind(this, view);
         return view;
     }
 
     public void setCity(City city){
         cityNameView.setText(city.getCityName());
-        cityLatView.setText(StringFormatter.latLongToString(city.getLat()));
-        cityLongView.setText(StringFormatter.latLongToString(city.getLon()));
+        cityLatView.setText(StringFormatter.latOrLongToString(city.getLat()));
+        cityLongView.setText(StringFormatter.latOrLongToString(city.getLon()));
     }
 
 }

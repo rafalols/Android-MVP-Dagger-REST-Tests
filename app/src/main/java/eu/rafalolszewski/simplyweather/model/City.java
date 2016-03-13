@@ -1,5 +1,7 @@
 package eu.rafalolszewski.simplyweather.model;
 
+import com.google.android.gms.location.places.Place;
+
 /**
  * Created by rafal on 05.03.16.
  */
@@ -13,6 +15,12 @@ public class City {
         this.cityName = cityName;
         this.lat = lat;
         this.lon = lon;
+    }
+
+    public City(Place place){
+        this.cityName = place.getName().toString();
+        this.lat = place.getLatLng().latitude;
+        this.lon = place.getLatLng().longitude;
     }
 
     public String getCityName() {

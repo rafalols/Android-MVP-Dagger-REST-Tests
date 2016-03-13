@@ -1,6 +1,7 @@
 package eu.rafalolszewski.simplyweather.views.activities;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -10,27 +11,39 @@ import android.view.MenuItem;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+
+import javax.inject.Inject;
 
 import eu.rafalolszewski.simplyweather.R;
+import eu.rafalolszewski.simplyweather.SimplyWeatherApp;
+import eu.rafalolszewski.simplyweather.api.OpenWeatherApi;
+import eu.rafalolszewski.simplyweather.api.callback.WeatherApiCallback;
 import eu.rafalolszewski.simplyweather.model.City;
+import eu.rafalolszewski.simplyweather.model.WeatherCurrentData;
+import eu.rafalolszewski.simplyweather.model.WeatherFiveDaysData;
 import eu.rafalolszewski.simplyweather.views.fragments.CurrentCityFooterFragment;
-import eu.rafalolszewski.simplyweather.views.fragments.SearchFragment;
 import eu.rafalolszewski.simplyweather.views.fragments.WeatherBodyFragment;
-import eu.rafalolszewski.simplyweather.views.fragments.callbacks.SearchCallback;
 
-public class MainActivity extends AppCompatActivity implements SearchCallback, GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, PlaceSelectionListener, WeatherApiCallback {
 
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private static final String TAG = "MainActivity";
 
     private GoogleApiClient mGoogleApiClient;
 
-    SearchFragment searchFragment;
+    PlaceAutocompleteFragment autocompleteFragment;
 
     WeatherBodyFragment weatherBodyFragment;
 
     CurrentCityFooterFragment footerFragment;
+
+    @Inject
+    OpenWeatherApi openWeatherApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,27 +52,54 @@ public class MainActivity extends AppCompatActivity implements SearchCallback, G
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Set Google Api Client
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(this, this)
+                .enableAutoManage(this, 0, this)
                 .build();
+        mGoogleApiClient.connect();
 
-        searchFragment = (SearchFragment) getFragmentManager().findFragmentById(R.id.fragment_search);
-        weatherBodyFragment = (WeatherBodyFragment) getFragmentManager().findFragmentById(R.id.fragment_content);
-        footerFragment = (CurrentCityFooterFragment) getFragmentManager().findFragmentById(R.id.fragment_footer);
+        //Set Dagger ApiComponent
+        ((SimplyWeatherApp)getApplication()).getApiComponent().inject(this);
+
+        InitialFragments();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+
+        openWeatherApi.setCallback(this);
+    }
+
+    private void InitialFragments() {
+        initialAutocompleteFragment();
+        weatherBodyFragment = (WeatherBodyFragment) getFragmentManager().findFragmentById(R.id.fragment_content);
+        footerFragment = (CurrentCityFooterFragment) getFragmentManager().findFragmentById(R.id.fragment_footer);
+    }
+
+    private void initialAutocompleteFragment() {
+        autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        autocompleteFragment.setHint(getString(R.string.autocomplete_hint));
+        autocompleteFragment.setFilter(createAutocompleteFilter());
+        autocompleteFragment.setOnPlaceSelectedListener(this);
+
+    }
+
+    @NonNull
+    private AutocompleteFilter createAutocompleteFilter() {
+        // Create filter to search only cities
+        return new AutocompleteFilter.Builder()
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
+                .build();
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         mGoogleApiClient.disconnect();
     }
 
@@ -85,22 +125,41 @@ public class MainActivity extends AppCompatActivity implements SearchCallback, G
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * On Google Place Api connection failed
+     */
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.e(TAG, "onConnectionFailed: " + connectionResult.getErrorMessage());
+    }
 
     @Override
-    public void onCitySelected(City city) {
-        weatherBodyFragment.setCity(city);
+    public void onPlaceSelected(Place place) {
+        Log.i(TAG, "onPlaceSelected: place:" + place.getName() + "  log, lat:" + place.getLatLng().toString());
+        City city = new City(place);
+        openWeatherApi.getCurrentWeather(city.getLat(), city.getLon());
+        openWeatherApi.getFiveDaysWeather(city.getLat(), city.getLon());
+
     }
 
     @Override
     public void onError(Status status) {
-        Log.d(TAG, "onError: " + status.getStatusMessage());
+        Log.w(TAG, "onCitySelectError: " + status.getStatusMessage());
+    }
+
+
+    @Override
+    public void onGetCurrentWeather(WeatherCurrentData weatherCurrentData) {
+        Log.i(TAG, "onGetCurrentWeather: " + weatherCurrentData.toString());
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.d(TAG, "onConnectionFailed: " + connectionResult.getErrorMessage());
+    public void onGetFiveDaysWeather(WeatherFiveDaysData weatherFiveDaysData) {
+        Log.i(TAG, "onGetFiveDaysWeather: " + weatherFiveDaysData.toString());
     }
 
-
-
+    @Override
+    public void onGetWeatherFailure(Throwable t) {
+        Log.e(TAG, "onGetWeatherFailure: ", t);
+    }
 }
