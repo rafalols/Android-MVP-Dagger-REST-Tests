@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:padding="8dp"
+    >
+
+    <TextView
+        android:id="@+id/hour"
+        android:text="13:00"
+        android:textSize="26sp"
+        android:layout_gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_gravity="center"
+        android:src="@drawable/common_google_signin_btn_icon_dark_normal"
+        android:layout_weight="1"
+        android:layout_width="48dp"
+        android:layout_height="48dp" />
+
+
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/small_label"
+            android:layout_gravity="center"
+            android:textSize="12sp"
+            android:text="Wind:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/small_value"
+            android:textSize="16sp"
+            android:text="NW 12 km/h"
+            android:layout_gravity="center"
+            android:layout_marginTop="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/temp"
+        android:layout_gravity="center_vertical"
+        android:gravity="right"
+        android:text="-15 C"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
