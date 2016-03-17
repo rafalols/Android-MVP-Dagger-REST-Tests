@@ -1,8 +1,9 @@
 package eu.rafalolszewski.simplyweather.dagger.modules;
 
-import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
+
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
 
 import javax.inject.Singleton;
 
@@ -41,6 +42,16 @@ public class ApiModule {
     @Singleton
     OpenWeatherApi providesOpenWeatherApi(OpenWeatherService service, Application application){
         return new OpenWeatherApi(service, application);
+    }
+
+    @Provides
+    @Singleton
+    GoogleApiClient googleApiClient(Application application){
+        return new GoogleApiClient
+                .Builder(application)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .build();
     }
 
 }

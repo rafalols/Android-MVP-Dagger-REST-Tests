@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -18,9 +21,23 @@ import eu.rafalolszewski.simplyweather.util.StringFormatter;
  */
 public class WeatherBodyFragment extends Fragment {
 
-    @Bind(R.id.city_name) TextView cityNameView;
-    @Bind(R.id.city_lat) TextView cityLatView;
-    @Bind(R.id.city_long) TextView cityLongView;
+    @Bind(R.id.container_current_weather)
+    RelativeLayout currentWeatherContainer;
+
+    @Bind(R.id.listview)
+    ListView listView;
+
+    @Bind(R.id.weather_image)
+    ImageView currentWeatherImage;
+
+    @Bind(R.id.current_temp)
+    TextView currentTemp;
+
+    @Bind(R.id.current_from_to)
+    TextView curentTempFromTo;
+
+    @Bind(R.id.current_wind)
+    TextView currentWind;
 
     public WeatherBodyFragment() {
     }
@@ -33,10 +50,8 @@ public class WeatherBodyFragment extends Fragment {
         return view;
     }
 
-    public void setCity(City city){
-        cityNameView.setText(city.getCityName());
-        cityLatView.setText(StringFormatter.latOrLongToString(city.getLat()));
-        cityLongView.setText(StringFormatter.latOrLongToString(city.getLon()));
-    }
+
+
+
 
 }

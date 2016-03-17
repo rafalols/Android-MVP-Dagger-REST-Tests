@@ -1,5 +1,7 @@
 package eu.rafalolszewski.simplyweather.dagger.components;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -18,6 +20,8 @@ import retrofit2.Retrofit;
 public interface ApiComponent {
 
     OpenWeatherApi getOpenWeatherApi();
+
+    GoogleApiClient getGoogleApiClient();
 
     void inject(MainActivity activity);
 
