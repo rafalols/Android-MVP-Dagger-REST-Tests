@@ -21,16 +21,24 @@ android {
 }
 
 dependencies {
+
+    testCompile "junit:junit:$rootProject.ext.junitVersion"
+    testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
+    testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
+    testCompile "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockito"
+    testCompile "org.powermock:powermock-api-mockito:$rootProject.ext.powerMockito"
+
+    apt "com.google.dagger:dagger-compiler:2.0.1"
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.google.android.gms:play-services-location:8.4.0'
     compile 'com.google.dagger:dagger:2.0.1'
-    apt "com.google.dagger:dagger-compiler:2.0.1"
     compile 'javax.annotation:jsr250-api:1.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
     compile 'com.google.code.gson:gson:2.6.2'
 }
+

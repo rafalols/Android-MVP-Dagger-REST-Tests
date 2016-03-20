@@ -12,12 +12,14 @@ public interface MainPresenterInterface extends GoogleApiClient.OnConnectionFail
 
     public void onClickWeatherListItem(int id);
 
-    public void onClickCurrentGpsPosition();
+    public void getCurrentPositionWeather();
 
     public void onClickFavorites();
 
     public void onClickHistory();
 
+    public void connectGoogleApi();
 
+    public void disconnectGoogleApi();
 
 }

@@ -45,6 +45,7 @@ public class WeatherCurrentData {
 
     @Override
     public String toString() {
+        if (name == null || main == null) return "";
         return "name = " + name + ", temp = " + main.temp;
     }
 }

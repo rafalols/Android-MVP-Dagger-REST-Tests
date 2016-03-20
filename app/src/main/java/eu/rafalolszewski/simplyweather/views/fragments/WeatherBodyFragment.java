@@ -2,6 +2,7 @@ package eu.rafalolszewski.simplyweather.views.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +11,24 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import eu.rafalolszewski.simplyweather.R;
 import eu.rafalolszewski.simplyweather.model.City;
+import eu.rafalolszewski.simplyweather.model.WeatherCurrentData;
+import eu.rafalolszewski.simplyweather.model.WeatherFiveDaysData;
+import eu.rafalolszewski.simplyweather.presenter.MainPresenter;
 import eu.rafalolszewski.simplyweather.util.StringFormatter;
+import eu.rafalolszewski.simplyweather.views.activities.MainActivity;
 
 /**
  * Created by rafal on 04.03.16.
  */
-public class WeatherBodyFragment extends Fragment {
+public class WeatherBodyFragment extends Fragment implements WeatherViewInterface{
 
+    private static final String TAG = "WeatherBodyFragment";
     @Bind(R.id.container_current_weather)
     RelativeLayout currentWeatherContainer;
 
@@ -39,6 +47,9 @@ public class WeatherBodyFragment extends Fragment {
     @Bind(R.id.current_wind)
     TextView currentWind;
 
+    @Inject
+    MainPresenter mainPresenter;
+
     public WeatherBodyFragment() {
     }
 
@@ -46,12 +57,40 @@ public class WeatherBodyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather_body, container, false);
-        ButterKnife.bind(this, view);
+
+        setupInjection(view);
+
         return view;
     }
 
+    private void setupInjection(View view) {
+        //ButterKnife
+        ButterKnife.bind(this, view);
+    }
 
 
+    @Override
+    public void setCurrentWeatherProgressIndicator(boolean active) {
+        Log.i(TAG, "setCurrentWeatherProgressIndicator: " + active);
+    }
 
+    @Override
+    public void setListProgressIndicator(boolean active) {
+        Log.i(TAG, "setListProgressIndicator: "  + active);
+    }
 
+    @Override
+    public void cantConnectWeatherApi() {
+        Log.i(TAG, "cantConnectWeatherApi: ");
+    }
+
+    @Override
+    public void refreshCurrentWeather(WeatherCurrentData weatherCurrentData) {
+        Log.i(TAG, "refreshCurrentWeather: " + weatherCurrentData.toString());
+    }
+
+    @Override
+    public void refreshFiveDaysWeather(WeatherFiveDaysData weatherFiveDaysData) {
+        Log.i(TAG, "refreshFiveDaysWeather: " + weatherFiveDaysData.toString());
+    }
 }

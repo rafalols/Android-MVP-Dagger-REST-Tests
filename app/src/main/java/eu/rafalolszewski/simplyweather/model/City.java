@@ -34,4 +34,20 @@ public class City {
     public double getLon() {
         return lon;
     }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (o.getClass() != City.class) return false;
+
+        City cityToCompare = (City) o;
+
+        if (cityName.equals(cityToCompare.cityName)  &&
+                lat == cityToCompare.lat  &&
+                lon == cityToCompare.lon){
+            return true;
+        }
+
+        return false;
+    }
 }

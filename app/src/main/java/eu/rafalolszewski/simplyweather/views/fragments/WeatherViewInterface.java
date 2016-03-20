@@ -4,13 +4,15 @@ import eu.rafalolszewski.simplyweather.model.WeatherCurrentData;
 import eu.rafalolszewski.simplyweather.model.WeatherFiveDaysData;
 
 /**
- * Created by rafal on 17.03.16.
+ * Created by Rafał Olszewski on 17.03.16.
  */
-public interface WeatherBodyFragmentInterface {
+public interface WeatherViewInterface {
 
-    public void setProgressIndicator(boolean active);
+    public void setCurrentWeatherProgressIndicator(boolean active);
 
-    public void showConnectionError();
+    public void setListProgressIndicator(boolean active);
+
+    public void cantConnectWeatherApi();
 
     public void refreshCurrentWeather(WeatherCurrentData weatherCurrentData);
 

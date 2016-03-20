@@ -15,7 +15,7 @@ import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
 /**
- * Created by rafal on 05.03.16.
+ * Created by Rafał Olszewski on 05.03.16.
  */
 
 @Module
@@ -46,7 +46,7 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    GoogleApiClient googleApiClient(Application application){
+    GoogleApiClient providesGoogleApiClient(Application application){
         return new GoogleApiClient
                 .Builder(application)
                 .addApi(Places.GEO_DATA_API)

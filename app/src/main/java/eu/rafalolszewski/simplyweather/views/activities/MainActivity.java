@@ -2,47 +2,35 @@ package eu.rafalolszewski.simplyweather.views.activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-
-import javax.inject.Inject;
 
 import eu.rafalolszewski.simplyweather.R;
 import eu.rafalolszewski.simplyweather.SimplyWeatherApp;
-import eu.rafalolszewski.simplyweather.api.OpenWeatherApi;
-import eu.rafalolszewski.simplyweather.api.callback.WeatherApiCallback;
-import eu.rafalolszewski.simplyweather.model.City;
-import eu.rafalolszewski.simplyweather.model.WeatherCurrentData;
-import eu.rafalolszewski.simplyweather.model.WeatherFiveDaysData;
+import eu.rafalolszewski.simplyweather.dagger.components.ActivityComponent;
+import eu.rafalolszewski.simplyweather.dagger.components.ApiComponent;
+import eu.rafalolszewski.simplyweather.dagger.components.DaggerActivityComponent;
+import eu.rafalolszewski.simplyweather.dagger.modules.ActivityModule;
+import eu.rafalolszewski.simplyweather.presenter.MainPresenter;
 import eu.rafalolszewski.simplyweather.views.fragments.WeatherBodyFragment;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, PlaceSelectionListener, WeatherApiCallback {
+public class MainActivity extends BaseActivity implements MainActivityController {
 
-    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private static final String TAG = "MainActivity";
 
+    public ActivityComponent activityComponent;
 
     PlaceAutocompleteFragment autocompleteFragment;
 
     WeatherBodyFragment weatherBodyFragment;
+    
+    MainPresenter mainPresenter;
 
-
-    @Inject
-    OpenWeatherApi openWeatherApi;
-
-    @Inject
-    GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,23 +39,34 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Set Dagger ApiComponent
-        ((SimplyWeatherApp)getApplication()).getApiComponent().inject(this);
-
-        InitialApis();
+        setupInjection();
 
         InitialFragments();
     }
 
-    private void InitialApis() {
-        mGoogleApiClient.registerConnectionFailedListener(this);
-        mGoogleApiClient.connect();
-        openWeatherApi.setCallback(this);
+    private void setupInjection() {
+        //Create ActivityComponent
+        activityComponent = DaggerActivityComponent.builder()
+                .apiComponent(getApiComponent())
+                .activityModule(new ActivityModule(this))
+                .build();
+        //Inject Presenter
+        mainPresenter = activityComponent.mainPresenter();
+    }
+
+    private ApiComponent getApiComponent(){
+        return  ((SimplyWeatherApp)getApplication()).getApiComponent();
     }
 
     private void InitialFragments() {
         initialAutocompleteFragment();
+        initialWeatherBodyFragment();
+    }
+
+    private void initialWeatherBodyFragment() {
         weatherBodyFragment = (WeatherBodyFragment) getFragmentManager().findFragmentById(R.id.fragment_content);
+        activityComponent.inject(weatherBodyFragment);
+        mainPresenter.setViewInterace(weatherBodyFragment);
     }
 
     private void initialAutocompleteFragment() {
@@ -75,8 +74,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         autocompleteFragment.setHint(getString(R.string.autocomplete_hint));
         autocompleteFragment.setFilter(createAutocompleteFilter());
-        autocompleteFragment.setOnPlaceSelectedListener(this);
-
+        autocompleteFragment.setOnPlaceSelectedListener(mainPresenter);
     }
 
     @NonNull
@@ -87,11 +85,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .build();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mainPresenter.connectGoogleApi();
+    }
+
 
     @Override
     protected void onStop() {
         super.onStop();
-        mGoogleApiClient.disconnect();
+        mainPresenter.disconnectGoogleApi();
     }
 
     @Override
@@ -116,46 +120,25 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * On Google Place Api connection failed
-     */
+
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.e(TAG, "onConnectionFailed: " + connectionResult.getErrorMessage());
+    public void onGoogleApiConnectionFail() {
+        Toast.makeText(this, getString(R.string.cantConnectGoogeApi), Toast.LENGTH_LONG).show();
     }
 
-    /** Google Place Autocomplete - selected */
     @Override
-    public void onPlaceSelected(Place place) {
-        Log.i(TAG, "onPlaceSelected: place:" + place.getName() + "  log, lat:" + place.getLatLng().toString());
-        City city = new City(place);
-        openWeatherApi.getCurrentWeather(city.getLat(), city.getLon());
-        openWeatherApi.getFiveDaysWeather(city.getLat(), city.getLon());
+    public void onCantGetGooglePlace() {
+        Toast.makeText(this, getString(R.string.cantGetPlace), Toast.LENGTH_LONG).show();
 
     }
 
-    /** Google Place Autocomplete - error */
     @Override
-    public void onError(Status status) {
-        Log.w(TAG, "onCitySelectError: " + status.getStatusMessage());
+    public void onLocationPermissionsGranted() {
+        mainPresenter.getCurrentPositionWeather();
     }
 
-
-    /** Open Weather - Current weather callback  */
     @Override
-    public void onGetCurrentWeather(WeatherCurrentData weatherCurrentData) {
-        Log.i(TAG, "onGetCurrentWeather: " + weatherCurrentData.toString());
-    }
-
-    /** Open Weather - Five Days weather callback  */
-    @Override
-    public void onGetFiveDaysWeather(WeatherFiveDaysData weatherFiveDaysData) {
-        Log.i(TAG, "onGetFiveDaysWeather: " + weatherFiveDaysData.toString());
-    }
-
-    /** Open weather - Fail */
-    @Override
-    public void onGetWeatherFailure(Throwable t) {
-        Log.e(TAG, "onGetWeatherFailure: ", t);
+    public void onLocationPermissionsDenied() {
+        Toast.makeText(this, getString(R.string.cantGetCurrentLocation), Toast.LENGTH_LONG).show();
     }
 }
