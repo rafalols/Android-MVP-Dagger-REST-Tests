@@ -4,9 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import java.util.List;
-
-import eu.rafalolszewski.simplyweather.model.WeatherFiveDaysData;
+import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
 
 /**
  * Created by rafal on 15.03.16.
@@ -21,7 +19,7 @@ public class FiveDaysWeatherListAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        return weatherData.list.size();
+        return weatherData.weatherLists.size();
     }
 
     @Override

@@ -6,17 +6,15 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
 
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import eu.rafalolszewski.simplyweather.api.OpenWeatherApi;
-import eu.rafalolszewski.simplyweather.model.City;
-import eu.rafalolszewski.simplyweather.model.WeatherCurrentData;
-import eu.rafalolszewski.simplyweather.model.WeatherFiveDaysData;
+import eu.rafalolszewski.simplyweather.model.CordsOfCity;
+import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
+import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
 import eu.rafalolszewski.simplyweather.util.CurrentLocationProvider;
 import eu.rafalolszewski.simplyweather.views.activities.MainActivity;
 import eu.rafalolszewski.simplyweather.views.fragments.WeatherViewInterface;
@@ -109,9 +107,9 @@ public class MainPresenterTest {
         verify(weatherView).setCurrentWeatherProgressIndicator(true);
         verify(weatherView).setListProgressIndicator(true);
 
-        City cityFromPlace = new City(place);
-        verify(openWeatherApi).getCurrentWeather(cityFromPlace.getLat(), cityFromPlace.getLon());
-        verify(openWeatherApi).getFiveDaysWeather(cityFromPlace.getLat(), cityFromPlace.getLon());
+        CordsOfCity cordsOfCityFromPlace = new CordsOfCity(place);
+        verify(openWeatherApi).getCurrentWeather(cordsOfCityFromPlace.getLat(), cordsOfCityFromPlace.getLon());
+        verify(openWeatherApi).getFiveDaysWeather(cordsOfCityFromPlace.getLat(), cordsOfCityFromPlace.getLon());
     }
 
     @Test

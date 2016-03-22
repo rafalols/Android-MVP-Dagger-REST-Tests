@@ -1,7 +1,7 @@
 package eu.rafalolszewski.simplyweather.api;
 
-import eu.rafalolszewski.simplyweather.model.WeatherCurrentData;
-import eu.rafalolszewski.simplyweather.model.WeatherFiveDaysData;
+import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
+import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Query;

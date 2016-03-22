@@ -8,9 +8,9 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 
 import eu.rafalolszewski.simplyweather.api.OpenWeatherApi;
-import eu.rafalolszewski.simplyweather.model.City;
-import eu.rafalolszewski.simplyweather.model.WeatherCurrentData;
-import eu.rafalolszewski.simplyweather.model.WeatherFiveDaysData;
+import eu.rafalolszewski.simplyweather.model.CordsOfCity;
+import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
+import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
 import eu.rafalolszewski.simplyweather.util.CurrentLocationProvider;
 import eu.rafalolszewski.simplyweather.views.activities.MainActivity;
 import eu.rafalolszewski.simplyweather.views.fragments.WeatherViewInterface;
@@ -81,11 +81,11 @@ public class MainPresenter implements MainPresenterInterface{
 
     @Override
     public void onPlaceSelected(Place place) {
-        City city = new City(place);
+        CordsOfCity cordsOfCity = new CordsOfCity(place);
         viewInterace.setCurrentWeatherProgressIndicator(true);
-        openWeatherApi.getCurrentWeather(city.getLat(), city.getLon());
+        openWeatherApi.getCurrentWeather(cordsOfCity.getLat(), cordsOfCity.getLon());
         viewInterace.setListProgressIndicator(true);
-        openWeatherApi.getFiveDaysWeather(city.getLat(), city.getLon());
+        openWeatherApi.getFiveDaysWeather(cordsOfCity.getLat(), cordsOfCity.getLon());
     }
 
     @Override

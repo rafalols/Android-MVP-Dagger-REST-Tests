@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">SimplyWeather</string>
     <string name="action_settings">Settings</string>
-    <string name="autocomplete_hint">Search city</string>
+    <string name="autocomplete_hint">Search cordsOfCity</string>
     <string name="title_activity_day_weather">DayWeatherActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="cantConnectGoogeApi">Can\'t connect to google api</string>
-    <string name="cantGetPlace">Error. Can\'t get this city!</string>
+    <string name="cantGetPlace">Error. Can\'t get this cordsOfCity!</string>
     <string name="cantGetCurrentLocation">Can\'t get current location. Permission denied.</string>
 </resources>

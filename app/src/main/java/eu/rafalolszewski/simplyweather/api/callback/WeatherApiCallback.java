@@ -1,7 +1,7 @@
 package eu.rafalolszewski.simplyweather.api.callback;
 
-import eu.rafalolszewski.simplyweather.model.WeatherCurrentData;
-import eu.rafalolszewski.simplyweather.model.WeatherFiveDaysData;
+import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
+import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
 
 /**
  * Created by rafal on 13.03.16.

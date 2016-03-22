@@ -5,19 +5,19 @@ import com.google.android.gms.location.places.Place;
 /**
  * Created by rafal on 05.03.16.
  */
-public class City {
+public class CordsOfCity {
 
     private String cityName;
     private double lat;
     private double lon;
 
-    public City(String cityName, double lat, double lon) {
+    public CordsOfCity(String cityName, double lat, double lon) {
         this.cityName = cityName;
         this.lat = lat;
         this.lon = lon;
     }
 
-    public City(Place place){
+    public CordsOfCity(Place place){
         this.cityName = place.getName().toString();
         this.lat = place.getLatLng().latitude;
         this.lon = place.getLatLng().longitude;
@@ -38,13 +38,13 @@ public class City {
     @Override
     public boolean equals(Object o) {
 
-        if (o.getClass() != City.class) return false;
+        if (o.getClass() != CordsOfCity.class) return false;
 
-        City cityToCompare = (City) o;
+        CordsOfCity cordsOfCityToCompare = (CordsOfCity) o;
 
-        if (cityName.equals(cityToCompare.cityName)  &&
-                lat == cityToCompare.lat  &&
-                lon == cityToCompare.lon){
+        if (cityName.equals(cordsOfCityToCompare.cityName)  &&
+                lat == cordsOfCityToCompare.lat  &&
+                lon == cordsOfCityToCompare.lon){
             return true;
         }
 

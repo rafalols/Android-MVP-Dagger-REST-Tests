@@ -16,12 +16,9 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import eu.rafalolszewski.simplyweather.R;
-import eu.rafalolszewski.simplyweather.model.City;
-import eu.rafalolszewski.simplyweather.model.WeatherCurrentData;
-import eu.rafalolszewski.simplyweather.model.WeatherFiveDaysData;
+import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
+import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
 import eu.rafalolszewski.simplyweather.presenter.MainPresenter;
-import eu.rafalolszewski.simplyweather.util.StringFormatter;
-import eu.rafalolszewski.simplyweather.views.activities.MainActivity;
 
 /**
  * Created by rafal on 04.03.16.

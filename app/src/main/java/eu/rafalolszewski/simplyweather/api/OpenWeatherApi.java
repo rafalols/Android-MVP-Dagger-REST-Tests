@@ -1,14 +1,12 @@
 package eu.rafalolszewski.simplyweather.api;
 
-import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 
 import eu.rafalolszewski.simplyweather.api.callback.WeatherApiCallback;
-import eu.rafalolszewski.simplyweather.model.WeatherCurrentData;
-import eu.rafalolszewski.simplyweather.model.WeatherFiveDaysData;
+import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
+import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
 import eu.rafalolszewski.simplyweather.util.StringFormatter;
 import retrofit.Call;
 import retrofit.Callback;
