@@ -1,5 +1,8 @@
 package eu.rafalolszewski.simplyweather.dagger.components;
 
+import android.app.Application;
+import android.content.SharedPreferences;
+
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import javax.inject.Singleton;
@@ -15,10 +18,12 @@ import eu.rafalolszewski.simplyweather.views.activities.MainActivity;
  */
 @Singleton
 @Component(modules = {ApiModule.class, ApplicationModule.class})
-public interface ApiComponent {
+public interface ApplicationComponent {
 
     OpenWeatherApi openWeatherApi();
 
     GoogleApiClient googleApiClient();
+
+    SharedPreferences sharedPreferences();
 
 }

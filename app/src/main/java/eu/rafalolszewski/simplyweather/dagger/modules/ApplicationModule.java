@@ -1,6 +1,8 @@
 package eu.rafalolszewski.simplyweather.dagger.modules;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import javax.inject.Singleton;
 
@@ -23,6 +25,12 @@ public class ApplicationModule {
     @Singleton
     Application providesApplication(){
         return application;
+    }
+
+    @Provides
+    @Singleton
+    SharedPreferences providesSharedPreferences(){
+        return PreferenceManager.getDefaultSharedPreferences(application);
     }
 
 }

@@ -2,18 +2,15 @@ package eu.rafalolszewski.simplyweather.model.openweather;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
-
 /**
  * Created by Rafał Olszewski on 22.03.16.
  */
-@Parcel
 public class WeatherList {
 
     @SerializedName("main")
     public MainMeasurements measurements;
 
-    public Weather weather;
+    public Weather[] weather;
 
     public Wind wind;
 

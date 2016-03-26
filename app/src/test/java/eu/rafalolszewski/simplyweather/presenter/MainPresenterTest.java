@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import eu.rafalolszewski.simplyweather.api.OpenWeatherApi;
-import eu.rafalolszewski.simplyweather.model.CordsOfCity;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
 import eu.rafalolszewski.simplyweather.util.CurrentLocationProvider;
@@ -107,9 +106,8 @@ public class MainPresenterTest {
         verify(weatherView).setCurrentWeatherProgressIndicator(true);
         verify(weatherView).setListProgressIndicator(true);
 
-        CordsOfCity cordsOfCityFromPlace = new CordsOfCity(place);
-        verify(openWeatherApi).getCurrentWeather(cordsOfCityFromPlace.getLat(), cordsOfCityFromPlace.getLon());
-        verify(openWeatherApi).getFiveDaysWeather(cordsOfCityFromPlace.getLat(), cordsOfCityFromPlace.getLon());
+        verify(openWeatherApi).getCurrentWeather(place.getLatLng().latitude, place.getLatLng().longitude);
+        verify(openWeatherApi).getFiveDaysWeather(place.getLatLng().latitude, place.getLatLng().longitude);
     }
 
     @Test

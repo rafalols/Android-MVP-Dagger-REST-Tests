@@ -8,7 +8,6 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 
 import eu.rafalolszewski.simplyweather.api.OpenWeatherApi;
-import eu.rafalolszewski.simplyweather.model.CordsOfCity;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
 import eu.rafalolszewski.simplyweather.util.CurrentLocationProvider;
@@ -36,10 +35,6 @@ public class MainPresenter implements MainPresenterInterface{
         this.openWeatherApi = openWeatherApi;
         openWeatherApi.setCallback(this);
         this.currentLocationProvider = currentLocationProvider;
-    }
-
-    public void setViewInterace(WeatherViewInterface viewInterace) {
-        this.viewInterace = viewInterace;
     }
 
     @Override
@@ -81,17 +76,19 @@ public class MainPresenter implements MainPresenterInterface{
 
     @Override
     public void onPlaceSelected(Place place) {
-        CordsOfCity cordsOfCity = new CordsOfCity(place);
+
         viewInterace.setCurrentWeatherProgressIndicator(true);
-        openWeatherApi.getCurrentWeather(cordsOfCity.getLat(), cordsOfCity.getLon());
+        openWeatherApi.getCurrentWeather(place.getLatLng().latitude, place.getLatLng().longitude);
         viewInterace.setListProgressIndicator(true);
-        openWeatherApi.getFiveDaysWeather(cordsOfCity.getLat(), cordsOfCity.getLon());
+        openWeatherApi.getFiveDaysWeather(place.getLatLng().latitude, place.getLatLng().longitude);
     }
 
     @Override
     public void onError(Status status) {
         mainActivity.onCantGetGooglePlace();
     }
+
+
 
     @Override
     public void onGetCurrentWeather(WeatherCurrentData weatherCurrentData) {
@@ -110,5 +107,13 @@ public class MainPresenter implements MainPresenterInterface{
         viewInterace.setCurrentWeatherProgressIndicator(false);
         viewInterace.setListProgressIndicator(false);
         viewInterace.cantConnectWeatherApi();
+    }
+
+    public void setViewInterace(WeatherViewInterface viewInterace) {
+        this.viewInterace = viewInterace;
+    }
+
+    public WeatherViewInterface getViewInterace() {
+        return viewInterace;
     }
 }

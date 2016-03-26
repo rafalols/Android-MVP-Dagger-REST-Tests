@@ -1,6 +1,7 @@
 package eu.rafalolszewski.simplyweather.views.fragments;
 
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,8 @@ import eu.rafalolszewski.simplyweather.R;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
 import eu.rafalolszewski.simplyweather.presenter.MainPresenter;
+import eu.rafalolszewski.simplyweather.util.StringFormatter;
+import eu.rafalolszewski.simplyweather.views.activities.SettingsActivity;
 
 /**
  * Created by rafal on 04.03.16.
@@ -46,6 +49,9 @@ public class WeatherBodyFragment extends Fragment implements WeatherViewInterfac
 
     @Inject
     MainPresenter mainPresenter;
+
+    @Inject
+    SharedPreferences sharedPreferences;
 
     public WeatherBodyFragment() {
     }
@@ -83,11 +89,18 @@ public class WeatherBodyFragment extends Fragment implements WeatherViewInterfac
 
     @Override
     public void refreshCurrentWeather(WeatherCurrentData weatherCurrentData) {
-        Log.i(TAG, "refreshCurrentWeather: " + weatherCurrentData.toString());
+        Log.d(TAG, "refreshCurrentWeather: " + weatherCurrentData.toString());
+        // TEMP
+        int tempUnit = getTempUnit();
+        currentTemp.setText(StringFormatter.getTempString(weatherCurrentData.measurements.temp, tempUnit));
+    }
+
+    private int getTempUnit() {
+        return sharedPreferences.getInt(SettingsActivity.TEMP_UNIT_KEY, SettingsActivity.TEMP_UNIT_DEFAULT);
     }
 
     @Override
     public void refreshFiveDaysWeather(WeatherFiveDaysData weatherFiveDaysData) {
-        Log.i(TAG, "refreshFiveDaysWeather: " + weatherFiveDaysData.toString());
+        Log.d(TAG, "refreshFiveDaysWeather: " + weatherFiveDaysData.toString());
     }
 }

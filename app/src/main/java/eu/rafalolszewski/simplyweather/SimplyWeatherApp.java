@@ -2,8 +2,8 @@ package eu.rafalolszewski.simplyweather;
 
 import android.app.Application;
 
-import eu.rafalolszewski.simplyweather.dagger.components.ApiComponent;
-import eu.rafalolszewski.simplyweather.dagger.components.DaggerApiComponent;
+import eu.rafalolszewski.simplyweather.dagger.components.ApplicationComponent;
+import eu.rafalolszewski.simplyweather.dagger.components.DaggerApplicationComponent;
 import eu.rafalolszewski.simplyweather.dagger.modules.ApplicationModule;
 
 /**
@@ -11,18 +11,19 @@ import eu.rafalolszewski.simplyweather.dagger.modules.ApplicationModule;
  */
 public class SimplyWeatherApp extends Application {
 
-    private ApiComponent apiComponent;
+    private ApplicationComponent applicationComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        apiComponent = DaggerApiComponent.builder()
+        applicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this))
                 .build();
+
     }
 
-    public ApiComponent getApiComponent() {
-        return apiComponent;
+    public ApplicationComponent getApplicationComponent() {
+        return applicationComponent;
     }
 }

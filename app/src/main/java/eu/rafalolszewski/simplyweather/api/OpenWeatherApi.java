@@ -29,6 +29,10 @@ public class OpenWeatherApi {
         key = getKeyFromMetaData(application);
     }
 
+
+    /**
+     * get key from AndroidManifest metadata
+     */
     private String getKeyFromMetaData(Application application) {
         try{
             ApplicationInfo appInfo = application.getPackageManager().getApplicationInfo(
@@ -43,11 +47,17 @@ public class OpenWeatherApi {
         }
     }
 
+
     public void getCurrentWeather(double lat, double lon) {
             Call<WeatherCurrentData> call = service.getCurrentWeather(
                     StringFormatter.latOrLongToString(lat),
                     StringFormatter.latOrLongToString(lon), key);
             call.enqueue(new CallbackCurrentWeather());
+    }
+
+    public void getCurrentWeather(int id) {
+        Call<WeatherCurrentData> call = service.getCurrentWeather(id, key);
+        call.enqueue(new CallbackCurrentWeather());
     }
 
     public void getFiveDaysWeather(double lat, double lon){
@@ -56,6 +66,14 @@ public class OpenWeatherApi {
                 StringFormatter.latOrLongToString(lon), key);
         call.enqueue(new CallbackFiveDaysWeather());
     }
+
+    public void getFiveDaysWeather(int id){
+        Call<WeatherFiveDaysData> call = service.getWeatherForFiveDays(id, key);
+        call.enqueue(new CallbackFiveDaysWeather());
+    }
+
+
+
 
     private class CallbackCurrentWeather implements Callback<WeatherCurrentData> {
         @Override

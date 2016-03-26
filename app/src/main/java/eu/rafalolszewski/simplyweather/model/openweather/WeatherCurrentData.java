@@ -2,12 +2,9 @@ package eu.rafalolszewski.simplyweather.model.openweather;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
-
 /**
  * Created by rafal on 12.03.16.
  */
-@Parcel
 public class WeatherCurrentData {
 
     @SerializedName("name")
@@ -16,7 +13,7 @@ public class WeatherCurrentData {
     @SerializedName("main")
     public MainMeasurements measurements;
 
-    public Weather weather;
+    public Weather[] weather;
 
     public Wind wind;
 
@@ -36,6 +33,7 @@ public class WeatherCurrentData {
 
     @Override
     public String toString() {
+        //TODO: Napisać ładną metodę toString()
         if (cityName == null || measurements == null) return "";
         return "name = " + cityName + ", temp = " + measurements.temp;
     }

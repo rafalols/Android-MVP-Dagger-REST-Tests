@@ -13,7 +13,7 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import eu.rafalolszewski.simplyweather.R;
 import eu.rafalolszewski.simplyweather.SimplyWeatherApp;
 import eu.rafalolszewski.simplyweather.dagger.components.ActivityComponent;
-import eu.rafalolszewski.simplyweather.dagger.components.ApiComponent;
+import eu.rafalolszewski.simplyweather.dagger.components.ApplicationComponent;
 import eu.rafalolszewski.simplyweather.dagger.components.DaggerActivityComponent;
 import eu.rafalolszewski.simplyweather.dagger.modules.ActivityModule;
 import eu.rafalolszewski.simplyweather.presenter.MainPresenter;
@@ -27,7 +27,7 @@ public class MainActivity extends BaseActivity implements MainActivityController
 
     PlaceAutocompleteFragment autocompleteFragment;
 
-    WeatherBodyFragment weatherBodyFragment;
+    public WeatherBodyFragment weatherBodyFragment;
     
     MainPresenter mainPresenter;
 
@@ -47,15 +47,15 @@ public class MainActivity extends BaseActivity implements MainActivityController
     private void setupInjection() {
         //Create ActivityComponent
         activityComponent = DaggerActivityComponent.builder()
-                .apiComponent(getApiComponent())
+                .applicationComponent(getApplicationComponent())
                 .activityModule(new ActivityModule(this))
                 .build();
         //Inject Presenter
         mainPresenter = activityComponent.mainPresenter();
     }
 
-    private ApiComponent getApiComponent(){
-        return  ((SimplyWeatherApp)getApplication()).getApiComponent();
+    private ApplicationComponent getApplicationComponent(){
+        return  ((SimplyWeatherApp)getApplication()).getApplicationComponent();
     }
 
     private void InitialFragments() {
