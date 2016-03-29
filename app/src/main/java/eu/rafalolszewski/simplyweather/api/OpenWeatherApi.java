@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import eu.rafalolszewski.simplyweather.api.callback.WeatherApiCallback;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
-import eu.rafalolszewski.simplyweather.util.StringFormatter;
+import eu.rafalolszewski.simplyweather.util.StringsProvider;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -50,8 +50,8 @@ public class OpenWeatherApi {
 
     public void getCurrentWeather(double lat, double lon) {
             Call<WeatherCurrentData> call = service.getCurrentWeather(
-                    StringFormatter.latOrLongToString(lat),
-                    StringFormatter.latOrLongToString(lon), key);
+                    StringsProvider.latOrLongToString(lat),
+                    StringsProvider.latOrLongToString(lon), key);
             call.enqueue(new CallbackCurrentWeather());
     }
 
@@ -62,8 +62,8 @@ public class OpenWeatherApi {
 
     public void getFiveDaysWeather(double lat, double lon){
         Call<WeatherFiveDaysData> call = service.getWeatherForFiveDays(
-                StringFormatter.latOrLongToString(lat),
-                StringFormatter.latOrLongToString(lon), key);
+                StringsProvider.latOrLongToString(lat),
+                StringsProvider.latOrLongToString(lon), key);
         call.enqueue(new CallbackFiveDaysWeather());
     }
 

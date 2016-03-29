@@ -1,6 +1,7 @@
 package eu.rafalolszewski.simplyweather.presenter;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -19,6 +20,7 @@ import eu.rafalolszewski.simplyweather.views.fragments.WeatherViewInterface;
  */
 public class MainPresenter implements MainPresenterInterface{
 
+    private static final String TAG = "MainPresenter";
     private WeatherViewInterface viewInterace;
 
     private MainActivity mainActivity;
@@ -39,33 +41,36 @@ public class MainPresenter implements MainPresenterInterface{
 
     @Override
     public void onClickWeatherListItem(int id) {
-
+        //TODO: add this functionality
     }
 
     @Override
     public void getCurrentPositionWeather() {
         double[] latAndLong = currentLocationProvider.getCurrentLatLong();
+        Log.d(TAG, "getCurrentPositionWeather: lat = " + latAndLong[0] + ", lon = " + latAndLong[1]);
         openWeatherApi.getCurrentWeather(latAndLong[0], latAndLong[1]);
         openWeatherApi.getFiveDaysWeather(latAndLong[0], latAndLong[1]);
     }
 
     @Override
     public void onClickFavorites() {
-
+        //TODO: add this functionality
     }
 
     @Override
     public void onClickHistory() {
-
+        //TODO: add this functionality
     }
 
     @Override
     public void connectGoogleApi() {
+        Log.d(TAG, "connectGoogleApi");
         googleApiClient.connect();
     }
 
     @Override
     public void disconnectGoogleApi() {
+        Log.d(TAG, "disconnectGoogleApi");
         googleApiClient.disconnect();
     }
 
@@ -76,7 +81,9 @@ public class MainPresenter implements MainPresenterInterface{
 
     @Override
     public void onPlaceSelected(Place place) {
-
+        Log.d(TAG, "onPlaceSelected: place selected: city = " + place.getName()
+                + ", lat = " + place.getLatLng().latitude
+                + ", lon = " + place.getLatLng().longitude);
         viewInterace.setCurrentWeatherProgressIndicator(true);
         openWeatherApi.getCurrentWeather(place.getLatLng().latitude, place.getLatLng().longitude);
         viewInterace.setListProgressIndicator(true);
@@ -85,25 +92,28 @@ public class MainPresenter implements MainPresenterInterface{
 
     @Override
     public void onError(Status status) {
+        Log.e(TAG, "onError: can't get google places. Status: " + status.getStatusMessage());
         mainActivity.onCantGetGooglePlace();
     }
 
 
-
     @Override
     public void onGetCurrentWeather(WeatherCurrentData weatherCurrentData) {
+        Log.d(TAG, "onGetCurrentWeather: current weather data recived for city = " + weatherCurrentData.cityName);
         viewInterace.setCurrentWeatherProgressIndicator(false);
         viewInterace.refreshCurrentWeather(weatherCurrentData);
     }
 
     @Override
     public void onGetFiveDaysWeather(WeatherFiveDaysData weatherFiveDaysData) {
+        Log.d(TAG, "onGetFiveDaysWeather: 5 days weather data recived " + weatherFiveDaysData);
         viewInterace.setListProgressIndicator(false);
-        viewInterace.refreshFiveDaysWeather(weatherFiveDaysData);
+        if (weatherFiveDaysData != null) viewInterace.refreshFiveDaysWeather(weatherFiveDaysData);
     }
 
     @Override
     public void onGetWeatherFailure(Throwable t) {
+        Log.e(TAG, "onGetWeatherFailure: can't get weather. Error: " + t.getMessage());
         viewInterace.setCurrentWeatherProgressIndicator(false);
         viewInterace.setListProgressIndicator(false);
         viewInterace.cantConnectWeatherApi();

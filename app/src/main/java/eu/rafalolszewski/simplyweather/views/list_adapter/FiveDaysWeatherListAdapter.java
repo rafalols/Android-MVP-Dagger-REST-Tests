@@ -19,7 +19,7 @@ public class FiveDaysWeatherListAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        return weatherData.weatherLists.size();
+        return weatherData.weatherLists.length;
     }
 
     @Override

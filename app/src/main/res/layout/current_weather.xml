@@ -31,7 +31,7 @@
 
 
         <TextView
-            android:id="@+id/current_from_to"
+            android:id="@+id/current_min_max"
             android:text="10 C - 14 C"
             android:layout_below="@+id/current_temp"
             android:layout_toRightOf="@id/weather_image"
@@ -41,7 +41,7 @@
             android:id="@+id/current_wind"
             android:text="NW 15 km/h"
             style="@style/currentWeatherTextSmall"
-            android:layout_below="@+id/current_from_to"
+            android:layout_below="@+id/current_min_max"
             android:layout_toRightOf="@id/weather_image"
              />
 

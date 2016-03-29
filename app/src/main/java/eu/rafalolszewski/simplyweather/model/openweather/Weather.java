@@ -22,6 +22,9 @@ public class Weather {
      * Weather condition within the group
      */
     @SerializedName("description")
-    public String longDesc;
+    public String description;
+
+    @SerializedName("icon")
+    public String image;
 
 }

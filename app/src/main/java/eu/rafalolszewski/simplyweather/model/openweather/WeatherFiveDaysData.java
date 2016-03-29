@@ -1,5 +1,7 @@
 package eu.rafalolszewski.simplyweather.model.openweather;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -7,13 +9,11 @@ import java.util.List;
  */
 public class WeatherFiveDaysData {
 
+    @SerializedName("city")
     public City city;
-    public List<WeatherList> weatherLists;
 
-    @Override
-    public String toString() {
-        //TODO: Napisać ładną metodę toString()
-        return "name = " + city.name + ", temp = " + weatherLists.get(0).measurements.temp + ", date = " + weatherLists.get(0).date;
-    }
+    @SerializedName("list")
+    public WeatherList[] weatherLists;
+
 
 }
