@@ -15,6 +15,12 @@ public class ImageMapper {
     private static final Map<String, String> imageMap;
     private static final String TAG = "ImageMapper";
 
+    Context context;
+
+    public ImageMapper(Context context) {
+        this.context = context;
+    }
+
     static {
         imageMap =  new HashMap<String, String>(){{
             //Day
@@ -40,7 +46,7 @@ public class ImageMapper {
         }};
     }
 
-    public static int getImageResourceId(String imageString, Context context){
+    public int getImageResourceId(String imageString){
         String imageName = getImageTitle(imageString);
         Log.d(TAG, "getImageResourceId: description = " + imageString + " , imageName = " + imageName);
         int resourceId = context.getResources().getIdentifier(imageName, "drawable", "eu.rafalolszewski.simplyweather");

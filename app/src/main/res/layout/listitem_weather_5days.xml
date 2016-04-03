@@ -17,11 +17,10 @@
     <ImageView
         android:id="@+id/image"
         android:layout_gravity="center"
-        android:src="@drawable/common_google_signin_btn_icon_dark_normal"
+        android:src="@drawable/sun_small"
         android:layout_weight="1"
         android:layout_width="48dp"
         android:layout_height="48dp" />
-
 
 
     <LinearLayout

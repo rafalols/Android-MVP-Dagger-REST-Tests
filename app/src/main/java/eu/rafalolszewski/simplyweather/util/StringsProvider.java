@@ -1,6 +1,11 @@
 package eu.rafalolszewski.simplyweather.util;
 
+import android.content.SharedPreferences;
+
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import eu.rafalolszewski.simplyweather.views.activities.SettingsActivity;
 
@@ -11,6 +16,11 @@ public class StringsProvider {
 
     public static final String[] DIRECTIONS_SHORT = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
 
+    private SharedPreferences sharedPreferences;
+
+    public StringsProvider(SharedPreferences sharedPreferences) {
+        this.sharedPreferences = sharedPreferences;
+    }
 
     public static String latOrLongToString(double latOrLong){
         DecimalFormat formatter = new DecimalFormat("0.000000");
@@ -20,8 +30,8 @@ public class StringsProvider {
     /**
      * TEMPERATURE STRING
      */
-    public static String getTempString(float tempInKelvin, String unit){
-        switch (unit){
+    public String getTempString(float tempInKelvin){
+        switch (getTempUnit()){
             case SettingsActivity.TEMP_UNIT_CELSIUS:
                 return getCelsiusStringFromKelvin(tempInKelvin);
             case SettingsActivity.TEMP_UNIT_KELVIN:
@@ -33,38 +43,38 @@ public class StringsProvider {
         }
     }
 
-    public static String getTempMinMaxString(float tempMinInKelvin, float tempMaxInKelvin, String unit){
-        return getTempString(tempMinInKelvin, unit) + " - " + getTempString(tempMaxInKelvin, unit);
+    public String getTempMinMaxString(float tempMinInKelvin, float tempMaxInKelvin){
+        return getTempString(tempMinInKelvin) + " - " + getTempString(tempMaxInKelvin);
     }
 
-    private static String getCelsiusStringFromKelvin(float kelvin){
+    private String getCelsiusStringFromKelvin(float kelvin){
         float celsius = kelvinToCelsius(kelvin);
         return String.format("%.0f", celsius) + "℃";
     }
 
-    private static String getKelvinString(float tempInKelvin){
+    private String getKelvinString(float tempInKelvin){
 
         return String.format("%.0f", tempInKelvin) + " K";
     }
 
-    private static String getFahrenheitFromKelvin(float tempInKelvin) {
+    private String getFahrenheitFromKelvin(float tempInKelvin) {
         float fahrenheit = kelvinToFahrenheit(tempInKelvin);
         return String.format("%.0f", fahrenheit) + "°F";
     }
 
-    private static float kelvinToCelsius(float kelvin) {
+    private float kelvinToCelsius(float kelvin) {
         return (kelvin - (float) 273.15);
     }
 
-    private static float kelvinToFahrenheit(float tempInKelvin) {
+    private float kelvinToFahrenheit(float tempInKelvin) {
         return (tempInKelvin * (9f / 5f)) - 459.67f;
     }
 
     /**
      * WIND STRING
      */
-    public static String getWindString(float speedInMpS, float direction, String unit){
-        switch (unit){
+    public String getWindString(float speedInMpS, float direction){
+        switch (getSpeedUnit()){
             case SettingsActivity.SPEED_UNIT_KMH:
                 return getWindDirection(direction) + " " + getSpeedInKMpH(speedInMpS);
             case SettingsActivity.SPEED_UNIT_MPS:
@@ -76,11 +86,11 @@ public class StringsProvider {
         }
     }
 
-    private static String getSpeedInMpS(float speed){
+    private String getSpeedInMpS(float speed){
         return String.format("%.0f", speed) + " m/s";
     }
 
-    private static String getSpeedInKMpH(float speed){
+    private String getSpeedInKMpH(float speed){
         float kmph = (speed / 1000) * 3600;
         return String.format("%.0f", kmph) + " km/h";
     }
@@ -95,4 +105,26 @@ public class StringsProvider {
         return DIRECTIONS_SHORT[dir%16];
     }
 
+    private String getSpeedUnit() {
+        return sharedPreferences.getString(SettingsActivity.SPEED_UNIT_KEY, SettingsActivity.SPEED_UNIT_DEFAULT);
+    }
+
+    private String getTempUnit() {
+        return sharedPreferences.getString(SettingsActivity.TEMP_UNIT_KEY, SettingsActivity.TEMP_UNIT_DEFAULT);
+    }
+
+    /**
+     * PRESSURE STRING
+     */
+    public String getPressureString(float pressure){
+        return String.format("%.0f", pressure) + " hPa";
+    }
+
+    /**
+     * DATE STRING
+     */
+    public String getHour(long dateLong){
+        Date date = new Date(dateLong * 1000L);
+        return new SimpleDateFormat("HH").format(date) + "h";
+    }
 }

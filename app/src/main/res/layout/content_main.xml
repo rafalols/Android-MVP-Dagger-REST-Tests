@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="eu.rafalolszewski.simplyweather.views.activities.MainActivity"
     tools:showIn="@layout/activity_main"
@@ -18,8 +17,9 @@
         android:id="@+id/fragment_content"
         android:name="eu.rafalolszewski.simplyweather.views.fragments.WeatherBodyFragment"
         android:layout_below="@+id/content_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         tools:layout="@layout/fragment_weather_body"
         />
 

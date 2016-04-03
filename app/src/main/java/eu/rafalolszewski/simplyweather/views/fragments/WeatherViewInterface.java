@@ -12,7 +12,9 @@ public interface WeatherViewInterface {
 
     public void setListProgressIndicator(boolean active);
 
-    public void cantConnectWeatherApi();
+    public void cantGetCurrentWeatherData();
+
+    public void cantGetFiveDaysWeatherData();
 
     public void refreshCurrentWeather(WeatherCurrentData weatherCurrentData);
 

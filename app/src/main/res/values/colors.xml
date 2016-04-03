@@ -2,5 +2,10 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#ff4000</color>
+    <color name="colorAccent">#cc0</color>
+
+    <color name="weather_list_background">#99c</color>
+    <color name="weather_current_background">#99c</color>
+    <color name="cityname_color">#fff</color>
+    <color name="icon_color">#6666cc</color>
 </resources>

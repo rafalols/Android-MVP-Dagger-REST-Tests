@@ -8,4 +8,8 @@
     <dimen name="weather_image_width">150dp</dimen>
     <dimen name="current_temp_text_size">60sp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+
+    <dimen name="error_get_weather_textsize">25sp</dimen>
+    <dimen name="cityname_textsize">20sp</dimen>
+    <item name="progressbar_alpha" type="dimen" format="float">0.5</item>
 </resources>

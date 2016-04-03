@@ -26,6 +26,8 @@
     </string-array>
 
     <string name="pref_temperature_unit">Temperature unit</string>
+    <string name="error_get_fivedays_weather">Can\'t get weather forecast</string>
+    <string name="contentdesc_current_location">Current location</string>
     <string-array name="pref_temperature_unit_titles">
         <item>Celsius</item>
         <item>Kelvin</item>

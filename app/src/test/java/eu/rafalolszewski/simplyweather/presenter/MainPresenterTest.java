@@ -139,7 +139,7 @@ public class MainPresenterTest {
 
     @Test
     public void onGetWeatherFailureTest(){
-        mainPresenter.onGetWeatherFailure(new Throwable());
+        mainPresenter.onGetCurrentWeatherFailure(new Throwable());
 
         verify(weatherView).setCurrentWeatherProgressIndicator(false);
         verify(weatherView).setListProgressIndicator(false);

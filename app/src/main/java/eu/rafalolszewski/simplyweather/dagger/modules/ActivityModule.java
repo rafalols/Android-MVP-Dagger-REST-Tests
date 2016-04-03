@@ -2,7 +2,9 @@ package eu.rafalolszewski.simplyweather.dagger.modules;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.LocationManager;
+import android.view.LayoutInflater;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -12,6 +14,9 @@ import eu.rafalolszewski.simplyweather.api.OpenWeatherApi;
 import eu.rafalolszewski.simplyweather.dagger.scopes.PerActivity;
 import eu.rafalolszewski.simplyweather.presenter.MainPresenter;
 import eu.rafalolszewski.simplyweather.util.CurrentLocationProvider;
+import eu.rafalolszewski.simplyweather.util.ImageMapper;
+import eu.rafalolszewski.simplyweather.util.StringsProvider;
+import eu.rafalolszewski.simplyweather.views.list_adapter.FiveDaysWeatherListAdapter;
 
 /**
  * Created by rafal on 17.03.16.
@@ -45,8 +50,27 @@ public class ActivityModule {
 
     @Provides
     @PerActivity
-    MainPresenter providesMainPresenter(GoogleApiClient googleApiClient, OpenWeatherApi openWeatherApi, CurrentLocationProvider currentLocationProvider){
-        return new MainPresenter(activity, googleApiClient, openWeatherApi, currentLocationProvider);
+    MainPresenter providesMainPresenter(GoogleApiClient googleApiClient, OpenWeatherApi openWeatherApi,
+                                        CurrentLocationProvider currentLocationProvider, SharedPreferences sharedPreferences){
+        return new MainPresenter(activity, googleApiClient, openWeatherApi, currentLocationProvider, sharedPreferences);
+    }
+
+    @Provides
+    @PerActivity
+    ImageMapper providesImageMapper(){
+        return new ImageMapper(activity);
+    }
+
+    @Provides
+    @PerActivity
+    StringsProvider providesStringProvider(SharedPreferences sharedPreferences){
+        return new StringsProvider(sharedPreferences);
+    }
+
+    @Provides
+    @PerActivity
+    FiveDaysWeatherListAdapter providesFiveDaysWeatherListAdapter(ImageMapper imageMapper, StringsProvider stringsProvider){
+        return new FiveDaysWeatherListAdapter(LayoutInflater.from(activity), imageMapper, stringsProvider);
     }
 
 }

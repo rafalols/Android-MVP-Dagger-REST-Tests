@@ -24,14 +24,13 @@ public class MainActivity extends BaseActivity implements MainActivityController
 
     private static final String TAG = "MainActivity";
 
-    public ActivityComponent activityComponent;
+    private ActivityComponent activityComponent;
 
     PlaceAutocompleteFragment autocompleteFragment;
 
     public WeatherBodyFragment weatherBodyFragment;
-    
-    MainPresenter mainPresenter;
 
+    MainPresenter mainPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +43,7 @@ public class MainActivity extends BaseActivity implements MainActivityController
 
         InitialFragments();
     }
+
 
     private void setupInjection() {
         //Create ActivityComponent
@@ -92,12 +92,12 @@ public class MainActivity extends BaseActivity implements MainActivityController
         mainPresenter.connectGoogleApi();
     }
 
-
     @Override
     protected void onStop() {
         super.onStop();
         mainPresenter.disconnectGoogleApi();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -123,11 +123,11 @@ public class MainActivity extends BaseActivity implements MainActivityController
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onGoogleApiConnectionFail() {
         Toast.makeText(this, getString(R.string.cantConnectGoogeApi), Toast.LENGTH_LONG).show();
     }
+
 
     @Override
     public void onCantGetGooglePlace() {
@@ -143,5 +143,9 @@ public class MainActivity extends BaseActivity implements MainActivityController
     @Override
     public void onLocationPermissionsDenied() {
         Toast.makeText(this, getString(R.string.cantGetCurrentLocation), Toast.LENGTH_LONG).show();
+    }
+
+    public ActivityComponent getActivityComponent() {
+        return activityComponent;
     }
 }

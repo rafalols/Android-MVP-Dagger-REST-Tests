@@ -19,8 +19,9 @@ import retrofit.Retrofit;
 public class OpenWeatherApi {
 
     private static final String KEY_OF_METADATA_OPENWEATHER_KEY = "openweather.API_KEY";
+    private static final String TAG = "OpenWeatherApi";
 
-    private String key;
+    private final String key;
     private OpenWeatherService service;
     private WeatherApiCallback callback;
 
@@ -49,10 +50,10 @@ public class OpenWeatherApi {
 
 
     public void getCurrentWeather(double lat, double lon) {
-            Call<WeatherCurrentData> call = service.getCurrentWeather(
-                    StringsProvider.latOrLongToString(lat),
-                    StringsProvider.latOrLongToString(lon), key);
-            call.enqueue(new CallbackCurrentWeather());
+        Call<WeatherCurrentData> call = service.getCurrentWeather(
+                StringsProvider.latOrLongToString(lat),
+                StringsProvider.latOrLongToString(lon), key);
+        call.enqueue(new CallbackCurrentWeather());
     }
 
     public void getCurrentWeather(int id) {
@@ -73,8 +74,6 @@ public class OpenWeatherApi {
     }
 
 
-
-
     private class CallbackCurrentWeather implements Callback<WeatherCurrentData> {
         @Override
         public void onResponse(Response<WeatherCurrentData> response, Retrofit retrofit) {
@@ -83,7 +82,7 @@ public class OpenWeatherApi {
         }
         @Override
         public void onFailure(Throwable t) {
-            callback.onGetWeatherFailure(t);
+            callback.onGetCurrentWeatherFailure(t);
         }
     }
 
@@ -95,7 +94,7 @@ public class OpenWeatherApi {
         }
         @Override
         public void onFailure(Throwable t) {
-            callback.onGetWeatherFailure(t);
+            callback.onGetFiveDaysWeatherFailure(t);
         }
     }
 

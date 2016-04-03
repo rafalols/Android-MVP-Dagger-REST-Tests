@@ -12,5 +12,7 @@ public interface WeatherApiCallback {
 
     public void onGetFiveDaysWeather(WeatherFiveDaysData weatherFiveDaysData);
 
-    public void onGetWeatherFailure(Throwable t);
+    public void onGetCurrentWeatherFailure(Throwable t);
+
+    public void onGetFiveDaysWeatherFailure(Throwable t);
 }
