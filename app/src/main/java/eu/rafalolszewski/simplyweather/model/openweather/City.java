@@ -14,4 +14,16 @@ public class City {
 
     public String country;
 
+    @Override
+    public boolean equals(Object o) {
+        //Check class
+        if (!o.getClass().equals(City.class)) return false;
+        //Check params
+        City objectToCompare = (City) o;
+        if (id != objectToCompare.id) return false;
+        if (!name.equals(objectToCompare.name)) return false;
+        if (!country.equals(objectToCompare.country)) return false;
+
+        return true;
+    }
 }

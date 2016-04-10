@@ -20,16 +20,19 @@ public class CurrentLocationProvider {
     private LocationManager locationManager;
 
     public CurrentLocationProvider(Activity activity, LocationManager locationManager) {
+        this.activity = activity;
         this.locationManager = locationManager;
     }
 
     public double[] getCurrentLatLong() {
-        double[] latAndLong = new double[2];
-
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //When permissions are granted:
             Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(getCriteria(), false));
+
+            if (location == null) return null;
+
+            double[] latAndLong = new double[2];
             latAndLong[0] = location.getLatitude();
             latAndLong[1] = location.getLongitude();
 
@@ -43,7 +46,6 @@ public class CurrentLocationProvider {
                     MY_PERMISSIONS_REQUEST_LOCATION);
 
             return null;
-
         }
     }
 

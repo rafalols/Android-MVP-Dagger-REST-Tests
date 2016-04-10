@@ -11,6 +11,9 @@ import android.widget.Toast;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import eu.rafalolszewski.simplyweather.R;
 import eu.rafalolszewski.simplyweather.SimplyWeatherApp;
 import eu.rafalolszewski.simplyweather.dagger.components.ActivityComponent;
@@ -31,6 +34,8 @@ public class MainActivity extends BaseActivity implements MainActivityController
     public WeatherBodyFragment weatherBodyFragment;
 
     MainPresenter mainPresenter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +58,7 @@ public class MainActivity extends BaseActivity implements MainActivityController
                 .build();
         //Inject Presenter
         mainPresenter = activityComponent.mainPresenter();
+        ButterKnife.bind(this, this);
     }
 
     private ApplicationComponent getApplicationComponent(){
@@ -76,6 +82,11 @@ public class MainActivity extends BaseActivity implements MainActivityController
         autocompleteFragment.setHint(getString(R.string.autocomplete_hint));
         autocompleteFragment.setFilter(createAutocompleteFilter());
         autocompleteFragment.setOnPlaceSelectedListener(mainPresenter);
+    }
+
+    @OnClick(R.id.button_position)
+    public void currentPositionButtonClick(){
+        mainPresenter.getCurrentPositionWeather();
     }
 
     @NonNull
@@ -133,6 +144,11 @@ public class MainActivity extends BaseActivity implements MainActivityController
     public void onCantGetGooglePlace() {
         Toast.makeText(this, getString(R.string.cantGetPlace), Toast.LENGTH_LONG).show();
 
+    }
+
+    @Override
+    public void cantGetCurrentPosition() {
+        Toast.makeText(this, getString(R.string.cant_get_position), Toast.LENGTH_SHORT).show();
     }
 
     @Override

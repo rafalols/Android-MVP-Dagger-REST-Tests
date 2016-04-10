@@ -16,4 +16,15 @@ public class Rain {
     @SerializedName("3h")
     public float volume;
 
+    @Override
+    public boolean equals(Object o) {
+        //Check class
+        if (!o.getClass().equals(Rain.class)) return false;
+        //Check params
+        Rain objectToCompare = (Rain) o;
+        if (volume != objectToCompare.volume) return false;
+
+        return true;
+    }
+
 }

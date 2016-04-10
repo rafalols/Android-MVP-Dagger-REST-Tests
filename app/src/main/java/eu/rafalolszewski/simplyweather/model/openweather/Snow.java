@@ -16,4 +16,15 @@ public class Snow {
     @SerializedName("3h")
     public float volume;
 
+
+    @Override
+    public boolean equals(Object o) {
+        //Check class
+        if (!o.getClass().equals(Snow.class)) return false;
+        //Check params
+        Snow objectToCompare = (Snow) o;
+        if (volume != objectToCompare.volume) return false;
+
+        return true;
+    }
 }

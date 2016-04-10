@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import eu.rafalolszewski.simplyweather.util.SharedPreferencesManager;
 
 /**
  * Created by rafal on 11.03.16.
@@ -31,6 +32,12 @@ public class ApplicationModule {
     @Singleton
     SharedPreferences providesSharedPreferences(){
         return PreferenceManager.getDefaultSharedPreferences(application);
+    }
+
+    @Provides
+    @Singleton
+    SharedPreferencesManager providesSharedPreferencesManager(SharedPreferences sharedPreferences){
+        return new SharedPreferencesManager(sharedPreferences);
     }
 
 }

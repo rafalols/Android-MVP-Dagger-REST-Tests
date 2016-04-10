@@ -37,4 +37,20 @@ public class MainMeasurements {
      */
     public float temp_max;
 
+
+    @Override
+    public boolean equals(Object o) {
+        //Check class
+        if (!o.getClass().equals(MainMeasurements.class)) return false;
+        //Check params
+        MainMeasurements objectToCompare = (MainMeasurements) o;
+        if (temp != objectToCompare.temp) return false;
+        if (pressure != objectToCompare.pressure) return false;
+        if (humidity != objectToCompare.humidity) return false;
+        if (temp_min != objectToCompare.temp_min) return false;
+        if (temp_max != objectToCompare.temp_max) return false;
+
+        return true;
+    }
+
 }

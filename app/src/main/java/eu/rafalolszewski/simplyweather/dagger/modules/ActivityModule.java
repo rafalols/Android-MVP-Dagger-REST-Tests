@@ -15,6 +15,7 @@ import eu.rafalolszewski.simplyweather.dagger.scopes.PerActivity;
 import eu.rafalolszewski.simplyweather.presenter.MainPresenter;
 import eu.rafalolszewski.simplyweather.util.CurrentLocationProvider;
 import eu.rafalolszewski.simplyweather.util.ImageMapper;
+import eu.rafalolszewski.simplyweather.util.SharedPreferencesManager;
 import eu.rafalolszewski.simplyweather.util.StringsProvider;
 import eu.rafalolszewski.simplyweather.views.list_adapter.FiveDaysWeatherListAdapter;
 
@@ -51,8 +52,8 @@ public class ActivityModule {
     @Provides
     @PerActivity
     MainPresenter providesMainPresenter(GoogleApiClient googleApiClient, OpenWeatherApi openWeatherApi,
-                                        CurrentLocationProvider currentLocationProvider, SharedPreferences sharedPreferences){
-        return new MainPresenter(activity, googleApiClient, openWeatherApi, currentLocationProvider, sharedPreferences);
+                                        CurrentLocationProvider currentLocationProvider, SharedPreferencesManager preferencesManager){
+        return new MainPresenter(activity, googleApiClient, openWeatherApi, currentLocationProvider, preferencesManager);
     }
 
     @Provides

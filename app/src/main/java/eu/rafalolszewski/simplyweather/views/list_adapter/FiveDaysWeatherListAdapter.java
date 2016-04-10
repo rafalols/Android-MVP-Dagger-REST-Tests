@@ -39,7 +39,7 @@ public class FiveDaysWeatherListAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        if (weatherData == null) return 0;
+        if (weatherData == null || weatherData.weatherLists == null) return 0;
         return weatherData.weatherLists.length;
     }
 

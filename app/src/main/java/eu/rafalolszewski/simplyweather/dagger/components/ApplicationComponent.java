@@ -11,6 +11,7 @@ import dagger.Component;
 import eu.rafalolszewski.simplyweather.api.OpenWeatherApi;
 import eu.rafalolszewski.simplyweather.dagger.modules.ApiModule;
 import eu.rafalolszewski.simplyweather.dagger.modules.ApplicationModule;
+import eu.rafalolszewski.simplyweather.util.SharedPreferencesManager;
 import eu.rafalolszewski.simplyweather.views.activities.MainActivity;
 
 /**
@@ -25,5 +26,7 @@ public interface ApplicationComponent {
     GoogleApiClient googleApiClient();
 
     SharedPreferences sharedPreferences();
+
+    SharedPreferencesManager sharedPreferencesManager();
 
 }

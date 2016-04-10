@@ -40,4 +40,27 @@ public class WeatherCurrentData {
         if (cityName == null || measurements == null) return "";
         return "name = " + cityName + ", temp = " + measurements.temp;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        //Check class
+        if (!o.getClass().equals(WeatherCurrentData.class)) return false;
+        //Check params
+        WeatherCurrentData objectToCompare = (WeatherCurrentData) o;
+        if (cityName != null && !cityName.equals(objectToCompare.cityName)) return false;
+        if (measurements != null && !measurements.equals(objectToCompare.measurements)) return false;
+        if (wind != null && !wind.equals(objectToCompare.wind)) return false;
+        if (clouds != null && !clouds.equals(objectToCompare.clouds)) return false;
+        if (rain != null && !rain.equals(objectToCompare.rain)) return false;
+        if (snow != null && !snow.equals(objectToCompare.snow)) return false;
+        if (date != objectToCompare.date) return false;
+
+        if (weather != null && weather.length > 0){
+            for (int i = 0; i < weather.length; i++){
+                if (!weather[i].equals(objectToCompare.weather[i])) return false;
+            }
+        }
+
+        return true;
+    }
 }

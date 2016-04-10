@@ -9,4 +9,6 @@ public interface MainActivityController {
 
     public void onCantGetGooglePlace();
 
+    public void cantGetCurrentPosition();
+
 }

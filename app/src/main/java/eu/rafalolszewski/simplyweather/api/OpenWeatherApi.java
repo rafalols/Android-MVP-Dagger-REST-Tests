@@ -77,8 +77,12 @@ public class OpenWeatherApi {
     private class CallbackCurrentWeather implements Callback<WeatherCurrentData> {
         @Override
         public void onResponse(Response<WeatherCurrentData> response, Retrofit retrofit) {
-            WeatherCurrentData weatherCurrentData = response.body();
-            callback.onGetCurrentWeather(weatherCurrentData);
+            if (!response.isSuccess()) {
+                callback.onGetCurrentWeather(null);
+            }else {
+                WeatherCurrentData weatherCurrentData = response.body();
+                callback.onGetCurrentWeather(weatherCurrentData);
+            }
         }
         @Override
         public void onFailure(Throwable t) {
@@ -89,8 +93,12 @@ public class OpenWeatherApi {
     private class CallbackFiveDaysWeather implements Callback<WeatherFiveDaysData>{
         @Override
         public void onResponse(Response<WeatherFiveDaysData> response, Retrofit retrofit) {
-            WeatherFiveDaysData weatherFiveDaysData = response.body();
-            callback.onGetFiveDaysWeather(weatherFiveDaysData);
+            if (!response.isSuccess()) {
+                callback.onGetFiveDaysWeather(null);
+            }else {
+                WeatherFiveDaysData weatherFiveDaysData = response.body();
+                callback.onGetFiveDaysWeather(weatherFiveDaysData);
+            }
         }
         @Override
         public void onFailure(Throwable t) {

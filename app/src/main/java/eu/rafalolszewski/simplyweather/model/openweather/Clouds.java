@@ -16,4 +16,15 @@ public class Clouds {
     @SerializedName("all")
     public float cloudiness;
 
+    @Override
+    public boolean equals(Object o) {
+        //Check class
+        if (!o.getClass().equals(Clouds.class)) return false;
+        //Check params
+        Clouds objectToCompare = (Clouds) o;
+        if (cloudiness != objectToCompare.cloudiness) return false;
+
+        return true;
+    }
+
 }

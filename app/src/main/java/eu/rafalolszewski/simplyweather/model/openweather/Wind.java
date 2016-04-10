@@ -21,4 +21,17 @@ public class Wind {
     @SerializedName("deg")
     public float direction;
 
+
+    @Override
+    public boolean equals(Object o) {
+        //Check class
+        if (!o.getClass().equals(Wind.class)) return false;
+        //Check params
+        Wind objectToCompare = (Wind) o;
+        if (speed != objectToCompare.speed) return false;
+        if (direction != objectToCompare.direction) return false;
+
+        return true;
+    }
+
 }

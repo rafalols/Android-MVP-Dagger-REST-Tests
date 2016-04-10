@@ -16,14 +16,14 @@ public interface OpenWeatherService {
      * Used in selecting from google autocomplete searcher
      */
     @GET("/data/2.5/weather")
-    Call<WeatherCurrentData> getCurrentWeather(@Query("lat") String lat, @Query("lon") String lon, @Query("APPID") String key);
+    Call<WeatherCurrentData> getCurrentWeather(@Query("lat") String lat, @Query("lon") String lon, @Query("appid") String key);
 
     /**
      * Get 5 days weather by latitude and longitude
      * Used in selecting from google autocomplete searcher
      */
     @GET("/data/2.5/forecast")
-    Call<WeatherFiveDaysData> getWeatherForFiveDays(@Query("lat") String lat, @Query("lon") String lon, @Query("APPID") String key);
+    Call<WeatherFiveDaysData> getWeatherForFiveDays(@Query("lat") String lat, @Query("lon") String lon, @Query("appid") String key);
 
 
     /**
@@ -31,13 +31,13 @@ public interface OpenWeatherService {
      * Used in favorites and history
      */
     @GET("/data/2.5/weather")
-    Call<WeatherCurrentData> getCurrentWeather(@Query("id") int id, @Query("APPID") String key);
+    Call<WeatherCurrentData> getCurrentWeather(@Query("id") int id, @Query("appid") String key);
 
     /**
      * Get 5 days weather by id
      * Used in favorites and history
      */
     @GET("/data/2.5/forecast")
-    Call<WeatherFiveDaysData> getWeatherForFiveDays(@Query("id") int id, @Query("APPID") String key);
+    Call<WeatherFiveDaysData> getWeatherForFiveDays(@Query("id") int id, @Query("appid") String key);
 
 }

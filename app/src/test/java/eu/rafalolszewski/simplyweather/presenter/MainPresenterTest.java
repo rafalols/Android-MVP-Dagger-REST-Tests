@@ -1,5 +1,7 @@
 package eu.rafalolszewski.simplyweather.presenter;
 
+import android.util.Log;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
@@ -9,12 +11,15 @@ import com.google.android.gms.maps.model.LatLng;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.powermock.api.mockito.PowerMockito;
 
 import eu.rafalolszewski.simplyweather.api.OpenWeatherApi;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
 import eu.rafalolszewski.simplyweather.util.CurrentLocationProvider;
+import eu.rafalolszewski.simplyweather.util.SharedPreferencesManager;
 import eu.rafalolszewski.simplyweather.views.activities.MainActivity;
 import eu.rafalolszewski.simplyweather.views.fragments.WeatherViewInterface;
 
@@ -44,17 +49,22 @@ public class MainPresenterTest {
     @Mock
     CurrentLocationProvider currentLocationProvider;
 
+    @Mock
+    SharedPreferencesManager sharedPreferencesManager;
+
+
     private MainPresenter mainPresenter;
 
     @Before
     public void setupPresenter(){
         MockitoAnnotations.initMocks(this);
 
-        mainPresenter = new MainPresenter(mainActivity, googleApiClient, openWeatherApi, currentLocationProvider);
+        PowerMockito.mockStatic(Log.class);
+
+        mainPresenter = new MainPresenter(mainActivity, googleApiClient, openWeatherApi, currentLocationProvider, sharedPreferencesManager);
         mainPresenter.setViewInterace(weatherView);
 
         mockTestPlace();
-
     }
 
     private void mockTestPlace() {
@@ -79,7 +89,6 @@ public class MainPresenterTest {
 
         verify(openWeatherApi).getCurrentWeather(5d, 6d);
         verify(openWeatherApi).getFiveDaysWeather(5d, 6d);
-
     }
 
     @Test
@@ -138,13 +147,25 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void onGetWeatherFailureTest(){
+    public void onGetCurrentWeatherFailureTest(){
+        //To avoid reconnection:
+        mainPresenter.setCurrentWeatherRetry(MainPresenter.NUMBER_OF_RETRY_CONNECTIONS);
+        //Tested method:
         mainPresenter.onGetCurrentWeatherFailure(new Throwable());
 
         verify(weatherView).setCurrentWeatherProgressIndicator(false);
-        verify(weatherView).setListProgressIndicator(false);
+        verify(weatherView).cantGetCurrentWeatherData();
+    }
 
-        verify(weatherView).cantConnectWeatherApi();
+    @Test
+    public void onGetFivedaysWeatherFailureTest(){
+        //To avoid reconnection:
+        mainPresenter.setFivedaystWeatherRetry(MainPresenter.NUMBER_OF_RETRY_CONNECTIONS);
+        //Tested method:
+        mainPresenter.onGetFiveDaysWeatherFailure(new Throwable());
+
+        verify(weatherView).setListProgressIndicator(false);
+        verify(weatherView).cantGetFiveDaysWeatherData();
     }
 
     @Test
