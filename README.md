@@ -1,5 +1,8 @@
 # SimplyWeather
 
+App isn't finished yet.
+
+
 App which check weather (from OpenWeatherMap api) for place where you are (google place api) or selected city (searcher powered by google place autocomplete). 
 
 The aim of the project was to learn Dagger2, write code in nice architecture using MVP, and test code with JUnit, Mockito and Espresso. 
