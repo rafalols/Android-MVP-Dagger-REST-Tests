@@ -4,11 +4,15 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.gson.Gson;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import eu.rafalolszewski.simplyweather.dagger.scopes.PerActivity;
 import eu.rafalolszewski.simplyweather.util.SharedPreferencesManager;
+import eu.rafalolszewski.simplyweather.util.StringsProvider;
 
 /**
  * Created by rafal on 11.03.16.
@@ -36,8 +40,21 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    SharedPreferencesManager providesSharedPreferencesManager(SharedPreferences sharedPreferences){
-        return new SharedPreferencesManager(sharedPreferences);
+    Gson providesGson(){
+        return new Gson();
     }
+
+    @Provides
+    @Singleton
+    SharedPreferencesManager providesSharedPreferencesManager(SharedPreferences sharedPreferences, Gson gson){
+        return new SharedPreferencesManager(sharedPreferences, gson);
+    }
+
+    @Provides
+    @Singleton
+    StringsProvider providesStringProvider(SharedPreferences sharedPreferences){
+        return new StringsProvider(sharedPreferences);
+    }
+
 
 }

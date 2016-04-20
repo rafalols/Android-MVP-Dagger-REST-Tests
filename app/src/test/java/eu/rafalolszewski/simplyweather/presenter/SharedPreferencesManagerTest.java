@@ -46,7 +46,7 @@ public class SharedPreferencesManagerTest {
     public void setupComponents() throws Exception{
         MockitoAnnotations.initMocks(this);
 
-        sharedPreferencesManager = new SharedPreferencesManager(sharedPreferences);
+        sharedPreferencesManager = new SharedPreferencesManager(sharedPreferences, gson);
         when(sharedPreferences.edit()).thenReturn(editor);
         testData = getTestWeatherData();
         mockTestPlace();
@@ -78,12 +78,17 @@ public class SharedPreferencesManagerTest {
     public void saveLastSearchedPlaceTest(){
         sharedPreferencesManager.saveLastSearchedPlace(mockecdPlace);
 
-        PlaceCords placeCords = new PlaceCords((float)mockecdPlace.getLatLng().latitude,
-                                               (float)mockecdPlace.getLatLng().longitude);
+        PlaceCords placeCords = new PlaceCords(mockecdPlace.getLatLng().latitude,
+                                               mockecdPlace.getLatLng().longitude);
 
-        verify(sharedPreferences.edit()).putFloat(SharedPreferencesManager.LASTPLACE_LAT, placeCords.lat);
-        verify(sharedPreferences.edit()).putFloat(SharedPreferencesManager.LASTPLACE_LON, placeCords.lon);
+        verify(sharedPreferences.edit()).putLong(SharedPreferencesManager.LASTPLACE_LAT, Double.doubleToRawLongBits(placeCords.lat));
+        verify(sharedPreferences.edit()).putLong(SharedPreferencesManager.LASTPLACE_LON, Double.doubleToRawLongBits(placeCords.lon));
     }
 
+    @Test
+    public void saveLastSearchWasCurrentPlaceTest(){
+        sharedPreferencesManager.saveLastSearchWasCurrentPlace();
+        verify(sharedPreferences.edit()).putBoolean(SharedPreferencesManager.LAST_SEARCH_WAS_CURRENT_PLACE, true);
+    }
 
 }

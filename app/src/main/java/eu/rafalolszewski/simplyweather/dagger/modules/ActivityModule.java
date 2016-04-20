@@ -11,6 +11,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import dagger.Module;
 import dagger.Provides;
 import eu.rafalolszewski.simplyweather.api.OpenWeatherApi;
+import eu.rafalolszewski.simplyweather.api.TimeZoneApi;
 import eu.rafalolszewski.simplyweather.dagger.scopes.PerActivity;
 import eu.rafalolszewski.simplyweather.presenter.MainPresenter;
 import eu.rafalolszewski.simplyweather.util.CurrentLocationProvider;
@@ -51,21 +52,18 @@ public class ActivityModule {
 
     @Provides
     @PerActivity
-    MainPresenter providesMainPresenter(GoogleApiClient googleApiClient, OpenWeatherApi openWeatherApi,
-                                        CurrentLocationProvider currentLocationProvider, SharedPreferencesManager preferencesManager){
-        return new MainPresenter(activity, googleApiClient, openWeatherApi, currentLocationProvider, preferencesManager);
+    MainPresenter providesMainPresenter(GoogleApiClient googleApiClient,
+                                        OpenWeatherApi openWeatherApi,
+                                        TimeZoneApi timeZoneApi,
+                                        CurrentLocationProvider currentLocationProvider,
+                                        SharedPreferencesManager preferencesManager){
+        return new MainPresenter(activity, googleApiClient, openWeatherApi, timeZoneApi, currentLocationProvider, preferencesManager);
     }
 
     @Provides
     @PerActivity
     ImageMapper providesImageMapper(){
         return new ImageMapper(activity);
-    }
-
-    @Provides
-    @PerActivity
-    StringsProvider providesStringProvider(SharedPreferences sharedPreferences){
-        return new StringsProvider(sharedPreferences);
     }
 
     @Provides

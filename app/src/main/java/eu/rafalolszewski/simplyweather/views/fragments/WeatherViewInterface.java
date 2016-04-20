@@ -14,6 +14,10 @@ public interface WeatherViewInterface {
 
     public void cantGetCurrentWeatherData();
 
+    public void setInfoToCurrentWeatherContainer(String info);
+
+    public void setInfoToListContainer(String info);
+
     public void cantGetFiveDaysWeatherData();
 
     public void refreshCurrentWeather(WeatherCurrentData weatherCurrentData);

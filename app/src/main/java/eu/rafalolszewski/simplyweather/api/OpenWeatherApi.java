@@ -1,12 +1,11 @@
 package eu.rafalolszewski.simplyweather.api;
 
 import android.app.Application;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 
 import eu.rafalolszewski.simplyweather.api.callback.WeatherApiCallback;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
+import eu.rafalolszewski.simplyweather.util.MetaDataProvider;
 import eu.rafalolszewski.simplyweather.util.StringsProvider;
 import retrofit.Call;
 import retrofit.Callback;
@@ -18,58 +17,40 @@ import retrofit.Retrofit;
  */
 public class OpenWeatherApi {
 
-    private static final String KEY_OF_METADATA_OPENWEATHER_KEY = "openweather.API_KEY";
+    public static final String OPENWEATHER_API_URL = "http://api.openweathermap.org/";
+    private static final String OPENWEATHER_API_KEY_IN_MANIFEST = "openweather.API_KEY";
     private static final String TAG = "OpenWeatherApi";
 
-    private final String key;
+    private final String openweather_key;
     private OpenWeatherService service;
     private WeatherApiCallback callback;
 
     public OpenWeatherApi(OpenWeatherService service, Application application){
         this.service  = service;
-        key = getKeyFromMetaData(application);
+        openweather_key = MetaDataProvider.getMetaDataStringFromKey(application, OPENWEATHER_API_KEY_IN_MANIFEST);
     }
-
-
-    /**
-     * get key from AndroidManifest metadata
-     */
-    private String getKeyFromMetaData(Application application) {
-        try{
-            ApplicationInfo appInfo = application.getPackageManager().getApplicationInfo(
-                    application.getPackageName(), PackageManager.GET_META_DATA);
-            if (appInfo.metaData != null) {
-                return appInfo.metaData.getString(KEY_OF_METADATA_OPENWEATHER_KEY);
-            }else {
-                return null;
-            }
-        }catch (PackageManager.NameNotFoundException e) {
-            return null;
-        }
-    }
-
 
     public void getCurrentWeather(double lat, double lon) {
         Call<WeatherCurrentData> call = service.getCurrentWeather(
                 StringsProvider.latOrLongToString(lat),
-                StringsProvider.latOrLongToString(lon), key);
+                StringsProvider.latOrLongToString(lon), openweather_key);
         call.enqueue(new CallbackCurrentWeather());
     }
 
     public void getCurrentWeather(int id) {
-        Call<WeatherCurrentData> call = service.getCurrentWeather(id, key);
+        Call<WeatherCurrentData> call = service.getCurrentWeather(id, openweather_key);
         call.enqueue(new CallbackCurrentWeather());
     }
 
     public void getFiveDaysWeather(double lat, double lon){
         Call<WeatherFiveDaysData> call = service.getWeatherForFiveDays(
                 StringsProvider.latOrLongToString(lat),
-                StringsProvider.latOrLongToString(lon), key);
+                StringsProvider.latOrLongToString(lon), openweather_key);
         call.enqueue(new CallbackFiveDaysWeather());
     }
 
     public void getFiveDaysWeather(int id){
-        Call<WeatherFiveDaysData> call = service.getWeatherForFiveDays(id, key);
+        Call<WeatherFiveDaysData> call = service.getWeatherForFiveDays(id, openweather_key);
         call.enqueue(new CallbackFiveDaysWeather());
     }
 
@@ -78,7 +59,7 @@ public class OpenWeatherApi {
         @Override
         public void onResponse(Response<WeatherCurrentData> response, Retrofit retrofit) {
             if (!response.isSuccess()) {
-                callback.onGetCurrentWeather(null);
+                callback.onGetCurrentWeatherFailure(null);
             }else {
                 WeatherCurrentData weatherCurrentData = response.body();
                 callback.onGetCurrentWeather(weatherCurrentData);

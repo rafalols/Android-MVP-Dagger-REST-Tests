@@ -67,7 +67,7 @@ public class RefreshFiveDaysWeatherTest {
         ApplicationComponent applicationComponent =  ((SimplyWeatherApp)mainActivityTestRule.getActivity().getApplication()).getApplicationComponent();
         ActivityComponent activityComponent = mainActivityTestRule.getActivity().getActivityComponent();
         sharedPreferences = applicationComponent.sharedPreferences();
-        stringsProvider = activityComponent.stringsProvider();
+        stringsProvider = applicationComponent.stringsProvider();
         imageMapper = activityComponent.imageMapper();
         mainPresenter = activityComponent.mainPresenter();
     }

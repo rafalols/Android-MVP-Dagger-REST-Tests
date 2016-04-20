@@ -25,6 +25,16 @@
             </intent-filter>
         </activity>
 
+        <activity
+        android:name=".views.activities.SettingsActivity"
+        android:label="@string/title_activity_settings"
+        android:parentActivityName=".views.activities.MainActivity">
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="eu.rafalolszewski.simplyweather.views.activities.MainActivity" />
+        </activity>
+
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCwFdIWIevyTnu4AtkA0X4gYkaQVBAPbvg" />
@@ -32,14 +42,8 @@
             android:name="openweather.API_KEY"
             android:value="0c645367359e50e9eaf1b9397a22bd61" />
 
-        <activity
-            android:name=".views.activities.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".views.activities.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="eu.rafalolszewski.simplyweather.views.activities.MainActivity" />
-        </activity>
     </application>
+
+
 
 </manifest>

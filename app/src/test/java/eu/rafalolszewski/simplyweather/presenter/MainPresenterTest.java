@@ -16,6 +16,8 @@ import org.mockito.MockitoAnnotations;
 import org.powermock.api.mockito.PowerMockito;
 
 import eu.rafalolszewski.simplyweather.api.OpenWeatherApi;
+import eu.rafalolszewski.simplyweather.api.TimeZoneApi;
+import eu.rafalolszewski.simplyweather.model.PlaceCords;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
 import eu.rafalolszewski.simplyweather.util.CurrentLocationProvider;
@@ -47,6 +49,9 @@ public class MainPresenterTest {
     OpenWeatherApi openWeatherApi;
 
     @Mock
+    TimeZoneApi timeZoneApi;
+
+    @Mock
     CurrentLocationProvider currentLocationProvider;
 
     @Mock
@@ -61,7 +66,7 @@ public class MainPresenterTest {
 
         PowerMockito.mockStatic(Log.class);
 
-        mainPresenter = new MainPresenter(mainActivity, googleApiClient, openWeatherApi, currentLocationProvider, sharedPreferencesManager);
+        mainPresenter = new MainPresenter(mainActivity, googleApiClient, openWeatherApi, timeZoneApi, currentLocationProvider, sharedPreferencesManager);
         mainPresenter.setViewInterace(weatherView);
 
         mockTestPlace();
@@ -179,6 +184,24 @@ public class MainPresenterTest {
         mainPresenter.disconnectGoogleApi();
         verify(googleApiClient).disconnect();
     }
+
+    @Test
+    public void refreshStateFromLastRunTest(){
+        mainPresenter.refreshStateFromLastRun();
+
+        //Check preferences for last saved data:
+        verify(sharedPreferencesManager).loadObjectFromJson
+                (SharedPreferencesManager.JSON_CURRENTWEATHER, WeatherCurrentData.class);
+        verify(sharedPreferencesManager).loadObjectFromJson
+                (SharedPreferencesManager.JSON_FIVEDAYSWEATHER, WeatherFiveDaysData.class);
+
+        //Check for last search:
+        verify(sharedPreferencesManager).getLastPlaceCords();
+
+        when(sharedPreferencesManager.getLastPlaceCords()).thenReturn(new PlaceCords(1d, 2d));
+        verify(mainPresenter).callApiForWeatherData(1d, 2d);
+    }
+
 
 
 }

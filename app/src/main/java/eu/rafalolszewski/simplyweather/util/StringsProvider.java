@@ -7,6 +7,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import eu.rafalolszewski.simplyweather.model.PlaceCords;
 import eu.rafalolszewski.simplyweather.views.activities.SettingsActivity;
 
 /**
@@ -25,6 +26,12 @@ public class StringsProvider {
     public static String latOrLongToString(double latOrLong){
         DecimalFormat formatter = new DecimalFormat("0.000000");
         return formatter.format(latOrLong);
+    }
+
+    public static String placeCordsToStringWithComma(PlaceCords placeCords){
+        String lat = latOrLongToString(placeCords.lat);
+        String lon = latOrLongToString(placeCords.lon);
+        return lat + "," + lon;
     }
 
     /**

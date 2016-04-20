@@ -119,6 +119,17 @@ public class WeatherBodyFragment extends Fragment implements WeatherViewInterfac
     }
 
     @Override
+    public void setInfoToCurrentWeatherContainer(String info) {
+
+    }
+
+    @Override
+    public void setInfoToListContainer(String info) {
+
+    }
+
+
+    @Override
     public void cantGetFiveDaysWeatherData() {
         Log.w(TAG, "cantGetFiveDaysWeatherData: ");
     }

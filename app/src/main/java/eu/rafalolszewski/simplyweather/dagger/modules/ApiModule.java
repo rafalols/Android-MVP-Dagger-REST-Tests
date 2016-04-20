@@ -11,6 +11,8 @@ import dagger.Module;
 import dagger.Provides;
 import eu.rafalolszewski.simplyweather.api.OpenWeatherApi;
 import eu.rafalolszewski.simplyweather.api.OpenWeatherService;
+import eu.rafalolszewski.simplyweather.api.TimeZoneApi;
+import eu.rafalolszewski.simplyweather.api.TimeZoneService;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
@@ -21,27 +23,37 @@ import retrofit.Retrofit;
 @Module
 public class ApiModule {
 
-    private static final String OPENWEATHER_API_URL = "http://api.openweathermap.org/";
+    @Provides
+    @Singleton
+    OpenWeatherService providesOpenWeatherService(){
+        Retrofit retrofit = buildRetrofit(OpenWeatherApi.OPENWEATHER_API_URL);
+        return retrofit.create(OpenWeatherService.class);
+    }
 
     @Provides
     @Singleton
-    Retrofit providesRetrofit() {
+    TimeZoneService providesTimeZoneService(){
+        Retrofit retrofit = buildRetrofit(TimeZoneApi.TIME_ZONE_API_URL);
+        return retrofit.create(TimeZoneService.class);
+    }
+
+    private Retrofit buildRetrofit(String serviceUrl){
         return new Retrofit.Builder()
-                .baseUrl(OPENWEATHER_API_URL)
+                .baseUrl(serviceUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
 
     @Provides
     @Singleton
-    OpenWeatherService providesOpenWeatherService(Retrofit retrofit){
-        return retrofit.create(OpenWeatherService.class);
+    OpenWeatherApi providesOpenWeatherApi(OpenWeatherService service, Application application){
+        return new OpenWeatherApi(service, application);
     }
 
     @Provides
     @Singleton
-    OpenWeatherApi providesOpenWeatherApi(OpenWeatherService service, Application application){
-        return new OpenWeatherApi(service, application);
+    TimeZoneApi providesTimeZoneApi(TimeZoneService timeZoneService, Application application){
+        return new TimeZoneApi(timeZoneService, application);
     }
 
     @Provides
