@@ -43,6 +43,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.android.support:support-v4:23.2.0'
     compile 'org.parceler:parceler-api:1.0.4'
+    compile 'joda-time:joda-time:1.5.2';
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
 

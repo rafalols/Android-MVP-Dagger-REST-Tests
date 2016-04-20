@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#FFF</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#cc0</color>
+    <color name="colorAccent">#990</color>
 
-    <color name="weather_list_background">#99c</color>
-    <color name="weather_current_background">#99c</color>
-    <color name="cityname_color">#fff</color>
+    <color name="weather_list_background">#333</color>
+    <color name="weather_current_background">#333</color>
+    <color name="cityname_color">@color/colorPrimary</color>
     <color name="icon_color">#6666cc</color>
+    <color name="list_textcolor">@color/colorAccent</color>
+
 </resources>

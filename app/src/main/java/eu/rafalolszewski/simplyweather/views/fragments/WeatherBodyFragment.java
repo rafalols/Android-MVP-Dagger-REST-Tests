@@ -3,7 +3,6 @@ package eu.rafalolszewski.simplyweather.views.fragments;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +12,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import org.parceler.Parcels;
 
 import javax.inject.Inject;
 
@@ -26,7 +23,7 @@ import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
 import eu.rafalolszewski.simplyweather.presenter.MainPresenter;
 import eu.rafalolszewski.simplyweather.util.ImageMapper;
 import eu.rafalolszewski.simplyweather.util.StringsProvider;
-import eu.rafalolszewski.simplyweather.views.list_adapter.FiveDaysWeatherListAdapter;
+import eu.rafalolszewski.simplyweather.views.adapters.FiveDaysWeatherListAdapter;
 
 /**
  * Created by rafal on 04.03.16.

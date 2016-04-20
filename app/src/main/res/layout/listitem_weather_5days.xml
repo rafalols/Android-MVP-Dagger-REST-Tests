@@ -6,55 +6,46 @@
     android:padding="8dp"
     >
 
-    <TextView
-        android:id="@+id/hour"
-        android:text="13:00"
-        android:textSize="26sp"
-        android:layout_gravity="center_vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        style="@style/hour_container">
+
+        <TextView
+            android:id="@+id/hour_label"
+            android:text="12th"
+            style="@style/list_label"
+            />
+
+        <TextView
+            android:id="@+id/hour"
+            android:text="13:00"
+            style="@style/list_hour_text" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/image"
         android:layout_gravity="center"
         android:src="@drawable/sun_small"
-        android:layout_weight="1"
-        android:layout_width="48dp"
-        android:layout_height="48dp" />
+        android:layout_width="@dimen/list_image_width"
+        android:layout_height="@dimen/list_image_height" />
 
 
-    <LinearLayout
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <LinearLayout style="@style/small_value_container">
         <TextView
             android:id="@+id/small_label"
-            android:layout_gravity="center"
-            android:textSize="12sp"
-            android:text="Wind:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:text="@string/wind"
+            style="@style/list_label"
+            />
 
         <TextView
             android:id="@+id/small_value"
-            android:textSize="16sp"
             android:text="NW 12 km/h"
-            android:layout_gravity="center"
             android:layout_marginTop="2dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            style="@style/list_small_value"/>
     </LinearLayout>
 
     <TextView
         android:id="@+id/temp"
-        android:layout_gravity="center_vertical"
-        android:gravity="right"
         android:text="-15 C"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content" />
+        style="@style/list_temp_value" />
 
 </LinearLayout>

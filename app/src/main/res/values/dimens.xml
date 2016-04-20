@@ -4,12 +4,24 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-    <dimen name="weather_image_height">150dp</dimen>
-    <dimen name="weather_image_width">150dp</dimen>
-    <dimen name="current_temp_text_size">60sp</dimen>
+    <dimen name="weather_image_height">100dp</dimen>
+    <dimen name="weather_image_width">100dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+
+    <dimen name="hour_width">80dp</dimen>
 
     <dimen name="error_get_weather_textsize">25sp</dimen>
     <dimen name="cityname_textsize">20sp</dimen>
+    <dimen name="current_temp_text_size">45sp</dimen>
+    <dimen name="current_small_text_size">18sp</dimen>
+    <dimen name="list_hour_textsize">26sp</dimen>
+    <dimen name="list_label_size">13sp</dimen>
+    <dimen name="list_small_value_size">17sp</dimen>
+    <dimen name="list_temp_textsize">30sp</dimen>
+    <dimen name="list_image_width">70dp</dimen>
+    <dimen name="list_image_height">48dp</dimen>
+
+
     <item name="progressbar_alpha" type="dimen" format="float">0.5</item>
+
 </resources>

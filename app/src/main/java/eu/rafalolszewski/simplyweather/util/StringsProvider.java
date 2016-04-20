@@ -2,6 +2,9 @@ package eu.rafalolszewski.simplyweather.util;
 
 import android.content.SharedPreferences;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -127,5 +130,14 @@ public class StringsProvider {
     public String getHour(long dateLong){
         Date date = new Date(dateLong * 1000L);
         return new SimpleDateFormat("HH", Locale.US).format(date) + "h";
+    }
+
+    public String getHourLabel(long dateLong) {
+        Date currentDate = new Date();
+        DateTime dateTime = new DateTime(dateLong * 1000L);
+        DateTime currentDateTime = new DateTime(new SimpleDateFormat("dd/MMM/yyyy HH:mm", Locale.US).format(currentDate));
+        int days = Days.daysBetween(dateTime, currentDateTime).getDays();
+        //TODO
+        return null;
     }
 }

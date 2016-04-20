@@ -1,4 +1,4 @@
-package eu.rafalolszewski.simplyweather.views.list_adapter;
+package eu.rafalolszewski.simplyweather.views.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,12 +67,15 @@ public class FiveDaysWeatherListAdapter extends BaseAdapter{
 
         View view = inflater.inflate(R.layout.listitem_weather_5days, parent, false);
 
+        TextView hourLabel = (TextView) view.findViewById(R.id.hour_label);
         TextView hour = (TextView) view.findViewById(R.id.hour);
         ImageView image = (ImageView) view.findViewById(R.id.image);
         TextView small_label = (TextView) view.findViewById(R.id.small_label);
         TextView small_value = (TextView) view.findViewById(R.id.small_value);
         TextView temp = (TextView) view.findViewById(R.id.temp);
 
+//        TODO
+//        hourLabel.setText(stringsProvider.getHourLabel(data.date));
         hour.setText(stringsProvider.getHour(data.date));
 
         image.setImageResource(imageMapper.getImageResourceId(data.weather[0].image));

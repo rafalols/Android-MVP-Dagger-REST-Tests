@@ -5,10 +5,9 @@ import eu.rafalolszewski.simplyweather.dagger.modules.ActivityModule;
 import eu.rafalolszewski.simplyweather.dagger.scopes.PerActivity;
 import eu.rafalolszewski.simplyweather.presenter.MainPresenter;
 import eu.rafalolszewski.simplyweather.util.ImageMapper;
-import eu.rafalolszewski.simplyweather.util.SharedPreferencesManager;
 import eu.rafalolszewski.simplyweather.util.StringsProvider;
 import eu.rafalolszewski.simplyweather.views.fragments.WeatherBodyFragment;
-import eu.rafalolszewski.simplyweather.views.list_adapter.FiveDaysWeatherListAdapter;
+import eu.rafalolszewski.simplyweather.views.adapters.FiveDaysWeatherListAdapter;
 
 /**
  * Created by Rafał Olszewski on 18.03.16.

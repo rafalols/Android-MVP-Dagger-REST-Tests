@@ -17,7 +17,7 @@ import eu.rafalolszewski.simplyweather.util.CurrentLocationProvider;
 import eu.rafalolszewski.simplyweather.util.ImageMapper;
 import eu.rafalolszewski.simplyweather.util.SharedPreferencesManager;
 import eu.rafalolszewski.simplyweather.util.StringsProvider;
-import eu.rafalolszewski.simplyweather.views.list_adapter.FiveDaysWeatherListAdapter;
+import eu.rafalolszewski.simplyweather.views.adapters.FiveDaysWeatherListAdapter;
 
 /**
  * Created by rafal on 17.03.16.
