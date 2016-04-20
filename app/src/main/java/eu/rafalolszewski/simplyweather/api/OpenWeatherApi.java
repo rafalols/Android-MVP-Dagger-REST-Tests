@@ -3,6 +3,7 @@ package eu.rafalolszewski.simplyweather.api;
 import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
 import eu.rafalolszewski.simplyweather.api.callback.WeatherApiCallback;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
@@ -53,6 +54,8 @@ public class OpenWeatherApi {
         Call<WeatherCurrentData> call = service.getCurrentWeather(
                 StringsProvider.latOrLongToString(lat),
                 StringsProvider.latOrLongToString(lon), key);
+        Log.d(TAG, "getCurrentWeather: lat = " + StringsProvider.latOrLongToString(lat)
+                + ", lon = " + StringsProvider.latOrLongToString(lon));
         call.enqueue(new CallbackCurrentWeather());
     }
 
@@ -65,6 +68,8 @@ public class OpenWeatherApi {
         Call<WeatherFiveDaysData> call = service.getWeatherForFiveDays(
                 StringsProvider.latOrLongToString(lat),
                 StringsProvider.latOrLongToString(lon), key);
+        Log.d(TAG, "getFiveDaysWeather: lat = " + StringsProvider.latOrLongToString(lat)
+                + ", lon = " + StringsProvider.latOrLongToString(lon));
         call.enqueue(new CallbackFiveDaysWeather());
     }
 

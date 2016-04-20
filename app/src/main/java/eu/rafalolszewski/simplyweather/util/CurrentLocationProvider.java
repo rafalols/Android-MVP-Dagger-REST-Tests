@@ -9,6 +9,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 
+import eu.rafalolszewski.simplyweather.model.PlaceCords;
+
 /**
  * Created by Rafał Olszewski on 20.03.16.
  */
@@ -24,7 +26,7 @@ public class CurrentLocationProvider {
         this.locationManager = locationManager;
     }
 
-    public double[] getCurrentLatLong() {
+    public PlaceCords getCurrentLatLong() {
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //When permissions are granted:
@@ -32,11 +34,9 @@ public class CurrentLocationProvider {
 
             if (location == null) return null;
 
-            double[] latAndLong = new double[2];
-            latAndLong[0] = location.getLatitude();
-            latAndLong[1] = location.getLongitude();
+            PlaceCords placeCords = new PlaceCords(location.getLatitude(), location.getLongitude());
 
-            return latAndLong;
+            return placeCords;
 
         }else {
             //When permissions are denied.

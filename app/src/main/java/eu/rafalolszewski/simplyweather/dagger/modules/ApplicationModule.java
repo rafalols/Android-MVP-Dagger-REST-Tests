@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.gson.Gson;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -36,8 +38,14 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    SharedPreferencesManager providesSharedPreferencesManager(SharedPreferences sharedPreferences){
-        return new SharedPreferencesManager(sharedPreferences);
+    Gson providesGson(){
+        return new Gson();
+    }
+
+    @Provides
+    @Singleton
+    SharedPreferencesManager providesSharedPreferencesManager(SharedPreferences sharedPreferences, Gson gson){
+        return new SharedPreferencesManager(sharedPreferences, gson);
     }
 
 }

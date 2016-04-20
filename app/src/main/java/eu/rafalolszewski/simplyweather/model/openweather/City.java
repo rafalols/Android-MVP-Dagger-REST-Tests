@@ -26,4 +26,8 @@ public class City {
 
         return true;
     }
+
+    public boolean isValid() {
+        return name != null;
+    }
 }

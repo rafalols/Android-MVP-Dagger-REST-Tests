@@ -1,24 +1,25 @@
 package eu.rafalolszewski.simplyweather.presenter;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
-import com.google.gson.Gson;
+
+import org.parceler.Parcels;
 
 import eu.rafalolszewski.simplyweather.R;
 import eu.rafalolszewski.simplyweather.api.OpenWeatherApi;
+import eu.rafalolszewski.simplyweather.model.PlaceCords;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
 import eu.rafalolszewski.simplyweather.util.CurrentLocationProvider;
 import eu.rafalolszewski.simplyweather.util.SharedPreferencesManager;
 import eu.rafalolszewski.simplyweather.views.activities.MainActivity;
-import eu.rafalolszewski.simplyweather.views.fragments.WeatherViewInterface;
+import eu.rafalolszewski.simplyweather.views.fragments.WeatherFragmentInterface;
 
 /**
  * Created by rafal on 17.03.16.
@@ -26,10 +27,15 @@ import eu.rafalolszewski.simplyweather.views.fragments.WeatherViewInterface;
 public class MainPresenter implements MainPresenterInterface{
 
     private static final String TAG = "MainPresenter";
+    private static final String SAVEDSTATE_CURRENT_WEATHER = "savedstateCurrentWeather";
+    private static final String SAVEDSTATE_FIVEDAYS_WEATHER = "savedstateFiveDaysWeather";
+
     public static final int NUMBER_OF_RETRY_CONNECTIONS = 5;
 
+    private WeatherCurrentData weatherCurrentData;
+    private WeatherFiveDaysData weatherFiveDaysData;
 
-    private WeatherViewInterface viewInterace;
+    private WeatherFragmentInterface viewInterace;
 
     private MainActivity mainActivity;
 
@@ -40,7 +46,6 @@ public class MainPresenter implements MainPresenterInterface{
     private CurrentLocationProvider currentLocationProvider;
 
     private SharedPreferencesManager preferencesManager;
-
 
 
     private int currentWeatherRetry = 0;
@@ -57,29 +62,18 @@ public class MainPresenter implements MainPresenterInterface{
     }
 
     @Override
-    public void onClickWeatherListItem(int id) {
-        //TODO: add this functionality
-    }
-
-    @Override
     public void getCurrentPositionWeather() {
-        double[] latAndLong = currentLocationProvider.getCurrentLatLong();
-        if (latAndLong != null){
-            openWeatherApi.getCurrentWeather(latAndLong[0], latAndLong[1]);
-            openWeatherApi.getFiveDaysWeather(latAndLong[0], latAndLong[1]);
+        PlaceCords placeCords = currentLocationProvider.getCurrentLatLong();
+        if (placeCords != null){
+            callApiForWeatherData(placeCords);
         }else {
             mainActivity.cantGetCurrentPosition();
         }
     }
 
-    @Override
-    public void onClickFavorites() {
-        //TODO: add this functionality
-    }
-
-    @Override
-    public void onClickHistory() {
-        //TODO: add this functionality
+    protected void callApiForWeatherData(PlaceCords placeCords) {
+        openWeatherApi.getCurrentWeather(placeCords.lat, placeCords.lon);
+        openWeatherApi.getFiveDaysWeather(placeCords.lat, placeCords.lon);
     }
 
     @Override
@@ -90,6 +84,74 @@ public class MainPresenter implements MainPresenterInterface{
     @Override
     public void disconnectGoogleApi() {
         googleApiClient.disconnect();
+    }
+
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (weatherCurrentData != null)
+            outState.putParcelable(SAVEDSTATE_CURRENT_WEATHER, Parcels.wrap(weatherCurrentData));
+        if (weatherFiveDaysData != null)
+            outState.putParcelable(SAVEDSTATE_FIVEDAYS_WEATHER, Parcels.wrap(weatherFiveDaysData));
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        if (checkInSavedState(savedInstanceState)) return;
+
+        checkAndSetLastResultFromSharedPreference();
+
+        refreshLastSearch();
+    }
+
+
+    private boolean checkInSavedState(Bundle savedInstanceState) {
+        Log.d(TAG, "checkInSavedState: ");
+        if (savedInstanceState != null){
+            weatherCurrentData = Parcels.unwrap(savedInstanceState.getParcelable(SAVEDSTATE_CURRENT_WEATHER));
+            weatherFiveDaysData = Parcels.unwrap(savedInstanceState.getParcelable(SAVEDSTATE_FIVEDAYS_WEATHER));
+            if (weatherCurrentData != null && weatherFiveDaysData != null){
+                viewInterace.refreshCurrentWeather(weatherCurrentData);
+                viewInterace.refreshFiveDaysWeather(weatherFiveDaysData);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void checkAndSetLastResultFromSharedPreference() {
+        Log.d(TAG, "checkAndSetLastResultFromSharedPreference: ");
+        WeatherCurrentData weatherCurrentData = preferencesManager.loadObjectFromJson
+                (SharedPreferencesManager.JSON_CURRENTWEATHER, WeatherCurrentData.class);
+        WeatherFiveDaysData weatherFiveDaysData = preferencesManager.loadObjectFromJson
+                (SharedPreferencesManager.JSON_FIVEDAYSWEATHER, WeatherFiveDaysData.class);
+
+        if (weatherCurrentData != null && weatherFiveDaysData != null) {
+            viewInterace.refreshCurrentWeather(weatherCurrentData);
+            viewInterace.refreshFiveDaysWeather(weatherFiveDaysData);
+        }
+    }
+
+    private void refreshLastSearch() {
+        Log.d(TAG, "refreshLastSearch: ");
+        if (preferencesManager.getBoolean(SharedPreferencesManager.LAST_SEARCH_WAS_CURRENT_PLACE)){
+            //Last search was current place
+            getCurrentPositionWeather();
+        }else{
+            //Last search was city from google searcher
+            PlaceCords placeCords = preferencesManager.getLastPlaceCords();
+            if (placeCords != null) callApiForWeatherData(placeCords);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy: ");
+        if (weatherCurrentData != null && weatherFiveDaysData != null) {
+            preferencesManager.saveObjectAsJson(weatherCurrentData, SharedPreferencesManager.JSON_CURRENTWEATHER);
+            preferencesManager.saveObjectAsJson(weatherFiveDaysData, SharedPreferencesManager.JSON_FIVEDAYSWEATHER);
+        }
     }
 
     @Override
@@ -110,32 +172,35 @@ public class MainPresenter implements MainPresenterInterface{
         preferencesManager.saveLastSearchedPlace(place);
     }
 
+
     @Override
     public void onError(Status status) {
         mainActivity.onCantGetGooglePlace();
     }
 
-
     @Override
     public void onGetCurrentWeather(WeatherCurrentData weatherCurrentData) {
-        if (weatherCurrentData == null){
+        if (weatherCurrentData == null || !weatherCurrentData.isValid()){
             onFailureCurrentDataViewCallbacks();
             return;
         }
 //        saveWeatherToSharedPreferences(weatherCurrentData, JSON_CURRENTWEATHER);
         viewInterace.setCurrentWeatherProgressIndicator(false);
         viewInterace.refreshCurrentWeather(weatherCurrentData);
+        this.weatherCurrentData = weatherCurrentData;
     }
+
 
     @Override
     public void onGetFiveDaysWeather(WeatherFiveDaysData weatherFiveDaysData) {
-        if (weatherFiveDaysData == null) {
+        if (weatherFiveDaysData == null || !weatherFiveDaysData.isValid()) {
             onFailureFiveDaysWeatherViewCallbacks();
             return;
         }
 //        saveWeatherToSharedPreferences(weatherFiveDaysData, JSON_FIVEDAYSWEATHER);
         viewInterace.setListProgressIndicator(false);
         viewInterace.refreshFiveDaysWeather(weatherFiveDaysData);
+        this.weatherFiveDaysData = weatherFiveDaysData;
     }
 
     @Override
@@ -184,11 +249,12 @@ public class MainPresenter implements MainPresenterInterface{
         }
     }
 
-    public void setViewInterace(WeatherViewInterface viewInterace) {
+    @Override
+    public void setViewInterface(WeatherFragmentInterface viewInterace) {
         this.viewInterace = viewInterace;
     }
 
-    public WeatherViewInterface getViewInterace() {
+    public WeatherFragmentInterface getViewInterace() {
         return viewInterace;
     }
 

@@ -1,5 +1,6 @@
 package eu.rafalolszewski.simplyweather.presenter;
 
+import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -11,17 +12,18 @@ import com.google.android.gms.maps.model.LatLng;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.parceler.Parcels;
 import org.powermock.api.mockito.PowerMockito;
 
 import eu.rafalolszewski.simplyweather.api.OpenWeatherApi;
+import eu.rafalolszewski.simplyweather.model.PlaceCords;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
 import eu.rafalolszewski.simplyweather.util.CurrentLocationProvider;
 import eu.rafalolszewski.simplyweather.util.SharedPreferencesManager;
 import eu.rafalolszewski.simplyweather.views.activities.MainActivity;
-import eu.rafalolszewski.simplyweather.views.fragments.WeatherViewInterface;
+import eu.rafalolszewski.simplyweather.views.fragments.WeatherFragmentInterface;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,7 +37,7 @@ public class MainPresenterTest {
     private Place place;
 
     @Mock
-    private WeatherViewInterface weatherView;
+    private WeatherFragmentInterface weatherView;
 
     @Mock
     private MainActivity mainActivity;
@@ -52,7 +54,6 @@ public class MainPresenterTest {
     @Mock
     SharedPreferencesManager sharedPreferencesManager;
 
-
     private MainPresenter mainPresenter;
 
     @Before
@@ -62,7 +63,7 @@ public class MainPresenterTest {
         PowerMockito.mockStatic(Log.class);
 
         mainPresenter = new MainPresenter(mainActivity, googleApiClient, openWeatherApi, currentLocationProvider, sharedPreferencesManager);
-        mainPresenter.setViewInterace(weatherView);
+        mainPresenter.setViewInterface(weatherView);
 
         mockTestPlace();
     }
@@ -75,30 +76,15 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void onClickWeatherListItemTest(){
-        //TODO: Handle this action
-    }
-
-    @Test
     public void getCurrentPositionWeatherTest(){
-        //Check weather for current position
-        when(currentLocationProvider.getCurrentLatLong()).thenReturn(new double[]{5d, 6d});
+        PlaceCords placeCords = new PlaceCords(5d, 6d);
+        when(currentLocationProvider.getCurrentLatLong()).thenReturn(placeCords);
 
         mainPresenter.getCurrentPositionWeather();
         verify(currentLocationProvider).getCurrentLatLong();
 
         verify(openWeatherApi).getCurrentWeather(5d, 6d);
         verify(openWeatherApi).getFiveDaysWeather(5d, 6d);
-    }
-
-    @Test
-    public void onClickFavoritesTest(){
-        //TODO: Handle this action
-    }
-
-    @Test
-    public void onClickHistoryTest(){
-        //TODO: Handle this action
     }
 
     @Test
@@ -180,5 +166,46 @@ public class MainPresenterTest {
         verify(googleApiClient).disconnect();
     }
 
+    @Test
+    public void onCreateWithoutSavedStateTest(){
+
+        PlaceCords placeCords = new PlaceCords(1d, 2d);
+        when(sharedPreferencesManager.getLastPlaceCords()).thenReturn(placeCords);
+
+        mainPresenter.onCreate(null);
+
+        //Check preferences for last saved data:
+        verify(sharedPreferencesManager).loadObjectFromJson
+                (SharedPreferencesManager.JSON_CURRENTWEATHER, WeatherCurrentData.class);
+        verify(sharedPreferencesManager).loadObjectFromJson
+                (SharedPreferencesManager.JSON_FIVEDAYSWEATHER, WeatherFiveDaysData.class);
+
+        //Check refresh data
+        verify(sharedPreferencesManager).getLastPlaceCords();
+        verify(openWeatherApi).getCurrentWeather(placeCords.lat, placeCords.lon);
+        verify(openWeatherApi).getFiveDaysWeather(placeCords.lat, placeCords.lon);
+    }
+
+
+//     TODO
+//    @Test
+//    public void onCreateWithSavedStateTest(){
+//        WeatherCurrentData weatherCurrentData = new WeatherCurrentData();
+//        WeatherFiveDaysData weatherFiveDaysData = new WeatherFiveDaysData();
+//
+//        Bundle bundle = setupBundle(weatherCurrentData, weatherFiveDaysData);
+//        mainPresenter.onCreate(bundle);
+//
+//        verify(weatherView).refreshCurrentWeather(weatherCurrentData);
+//        verify(weatherView).refreshFiveDaysWeather(weatherFiveDaysData);
+//    }
+//
+//    private Bundle setupBundle(WeatherCurrentData weatherCurrentData, WeatherFiveDaysData weatherFiveDaysData) {
+//
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable(SharedPreferencesManager.JSON_CURRENTWEATHER, Parcels.wrap(weatherCurrentData));
+//        bundle.putParcelable(SharedPreferencesManager.JSON_FIVEDAYSWEATHER, Parcels.wrap(weatherFiveDaysData));
+//        return bundle;
+//    }
 
 }

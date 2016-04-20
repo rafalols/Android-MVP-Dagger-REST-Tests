@@ -6,7 +6,9 @@ import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
+import eu.rafalolszewski.simplyweather.model.PlaceCords;
 import eu.rafalolszewski.simplyweather.views.activities.SettingsActivity;
 
 /**
@@ -23,8 +25,7 @@ public class StringsProvider {
     }
 
     public static String latOrLongToString(double latOrLong){
-        DecimalFormat formatter = new DecimalFormat("0.000000");
-        return formatter.format(latOrLong);
+        return String.format(Locale.US, "%.6f", latOrLong);
     }
 
     /**
@@ -49,17 +50,17 @@ public class StringsProvider {
 
     private String getCelsiusStringFromKelvin(float kelvin){
         float celsius = kelvinToCelsius(kelvin);
-        return String.format("%.0f", celsius) + "℃";
+        return String.format(Locale.US, "%.0f", celsius) + "℃";
     }
 
     private String getKelvinString(float tempInKelvin){
 
-        return String.format("%.0f", tempInKelvin) + " K";
+        return String.format(Locale.US, "%.0f", tempInKelvin) + " K";
     }
 
     private String getFahrenheitFromKelvin(float tempInKelvin) {
         float fahrenheit = kelvinToFahrenheit(tempInKelvin);
-        return String.format("%.0f", fahrenheit) + "°F";
+        return String.format(Locale.US, "%.0f", fahrenheit) + "°F";
     }
 
     private float kelvinToCelsius(float kelvin) {
@@ -87,17 +88,17 @@ public class StringsProvider {
     }
 
     private String getSpeedInMpS(float speed){
-        return String.format("%.0f", speed) + " m/s";
+        return String.format(Locale.US,"%.0f", speed) + " m/s";
     }
 
     private String getSpeedInKMpH(float speed){
         float kmph = (speed / 1000) * 3600;
-        return String.format("%.0f", kmph) + " km/h";
+        return String.format(Locale.US, "%.0f", kmph) + " km/h";
     }
 
     private static String getSpeedInMIpH(float speed){
         float miph = (speed / 1609.344f) * 3600;
-        return String.format("%.0f", miph) + " km/h";
+        return String.format(Locale.US, "%.0f", miph) + " km/h";
     }
 
     private static String getWindDirection(float windDirection){
@@ -117,7 +118,7 @@ public class StringsProvider {
      * PRESSURE STRING
      */
     public String getPressureString(float pressure){
-        return String.format("%.0f", pressure) + " hPa";
+        return String.format(Locale.US, "%.0f", pressure) + " hPa";
     }
 
     /**
@@ -125,6 +126,6 @@ public class StringsProvider {
      */
     public String getHour(long dateLong){
         Date date = new Date(dateLong * 1000L);
-        return new SimpleDateFormat("HH").format(date) + "h";
+        return new SimpleDateFormat("HH", Locale.US).format(date) + "h";
     }
 }

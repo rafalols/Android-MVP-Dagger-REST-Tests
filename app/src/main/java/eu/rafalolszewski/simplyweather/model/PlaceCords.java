@@ -5,10 +5,10 @@ package eu.rafalolszewski.simplyweather.model;
  */
 public class PlaceCords {
 
-    public float lat;
-    public float lon;
+    public double lat;
+    public double lon;
 
-    public PlaceCords(float lat, float lon) {
+    public PlaceCords(double lat, double lon) {
         this.lat = lat;
         this.lon = lon;
     }

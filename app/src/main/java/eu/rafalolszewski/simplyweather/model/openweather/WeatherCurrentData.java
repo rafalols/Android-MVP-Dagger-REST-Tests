@@ -8,7 +8,7 @@ import org.parceler.Parcel;
  * Created by rafal on 12.03.16.
  */
 @Parcel
-public class WeatherCurrentData {
+public class WeatherCurrentData{
 
     @SerializedName("name")
     public String cityName;
@@ -62,5 +62,19 @@ public class WeatherCurrentData {
         }
 
         return true;
+    }
+
+
+    public boolean isValid() {
+        if (cityName != null
+                && measurements != null
+                && weather != null
+                && weather[0] != null
+                && weather[0].isValid()
+                && wind != null){
+            return true;
+        }else {
+            return false;
+        }
     }
 }

@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import eu.rafalolszewski.simplyweather.R;
@@ -21,9 +20,10 @@ import eu.rafalolszewski.simplyweather.dagger.components.ApplicationComponent;
 import eu.rafalolszewski.simplyweather.dagger.components.DaggerActivityComponent;
 import eu.rafalolszewski.simplyweather.dagger.modules.ActivityModule;
 import eu.rafalolszewski.simplyweather.presenter.MainPresenter;
+import eu.rafalolszewski.simplyweather.presenter.MainPresenterInterface;
 import eu.rafalolszewski.simplyweather.views.fragments.WeatherBodyFragment;
 
-public class MainActivity extends BaseActivity implements MainActivityController {
+public class MainActivity extends BaseActivity implements MainActivityInterface {
 
     private static final String TAG = "MainActivity";
 
@@ -33,7 +33,7 @@ public class MainActivity extends BaseActivity implements MainActivityController
 
     public WeatherBodyFragment weatherBodyFragment;
 
-    MainPresenter mainPresenter;
+    MainPresenterInterface mainPresenter;
 
 
 
@@ -47,8 +47,14 @@ public class MainActivity extends BaseActivity implements MainActivityController
         setupInjection();
 
         InitialFragments();
+
+        mainPresenter.onCreate(savedInstanceState);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        mainPresenter.onSaveInstanceState(outState);
+    }
 
     private void setupInjection() {
         //Create ActivityComponent
@@ -73,7 +79,7 @@ public class MainActivity extends BaseActivity implements MainActivityController
     private void initialWeatherBodyFragment() {
         weatherBodyFragment = (WeatherBodyFragment) getFragmentManager().findFragmentById(R.id.fragment_content);
         activityComponent.inject(weatherBodyFragment);
-        mainPresenter.setViewInterace(weatherBodyFragment);
+        mainPresenter.setViewInterface(weatherBodyFragment);
     }
 
     private void initialAutocompleteFragment() {
@@ -109,6 +115,11 @@ public class MainActivity extends BaseActivity implements MainActivityController
         mainPresenter.disconnectGoogleApi();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mainPresenter.onDestroy();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

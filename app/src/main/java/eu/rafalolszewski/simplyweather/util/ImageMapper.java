@@ -48,7 +48,7 @@ public class ImageMapper {
 
     public int getImageResourceId(String imageString){
         String imageName = getImageTitle(imageString);
-        Log.d(TAG, "getImageResourceId: description = " + imageString + " , imageName = " + imageName);
+//        Log.d(TAG, "getImageResourceId: description = " + imageString + " , imageName = " + imageName);
         int resourceId = context.getResources().getIdentifier(imageName, "drawable", "eu.rafalolszewski.simplyweather");
         return resourceId;
     }

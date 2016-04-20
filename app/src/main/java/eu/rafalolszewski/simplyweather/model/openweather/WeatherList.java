@@ -47,4 +47,14 @@ public class WeatherList {
         return true;
     }
 
+    public boolean isValid() {
+        if (measurements != null
+                && weather != null
+                && weather[0] != null
+                && weather[0].isValid()
+                && wind != null){
+            return true;
+        }
+        return false;
+    }
 }

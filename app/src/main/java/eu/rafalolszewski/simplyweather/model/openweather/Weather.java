@@ -44,4 +44,11 @@ public class Weather {
 
         return true;
     }
+
+    public boolean isValid() {
+        if (image != null){
+            return true;
+        }
+        return false;
+    }
 }

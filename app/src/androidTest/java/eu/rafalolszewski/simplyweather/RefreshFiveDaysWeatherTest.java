@@ -84,7 +84,7 @@ public class RefreshFiveDaysWeatherTest {
         mainActivityTestRule.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //Get to the WeatherViewInterface and refreshCurrentWeather()
+                //Get to the WeatherFragmentInterface and refreshCurrentWeather()
                 mainPresenter.getViewInterace().refreshFiveDaysWeather(testData);
             }
         });

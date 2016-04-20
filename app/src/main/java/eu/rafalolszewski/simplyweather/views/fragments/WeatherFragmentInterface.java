@@ -6,7 +6,7 @@ import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
 /**
  * Created by Rafał Olszewski on 17.03.16.
  */
-public interface WeatherViewInterface {
+public interface WeatherFragmentInterface {
 
     public void setCurrentWeatherProgressIndicator(boolean active);
 
@@ -19,5 +19,7 @@ public interface WeatherViewInterface {
     public void refreshCurrentWeather(WeatherCurrentData weatherCurrentData);
 
     public void refreshFiveDaysWeather(WeatherFiveDaysData weatherFiveDaysData);
+
+    public void setInfoToCurrentWeatherContainer(String info);
 
 }

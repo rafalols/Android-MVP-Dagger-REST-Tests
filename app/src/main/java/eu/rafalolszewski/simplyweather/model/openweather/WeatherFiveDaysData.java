@@ -34,4 +34,14 @@ public class WeatherFiveDaysData {
         return true;
     }
 
+    public boolean isValid() {
+        if (    city != null
+                && city.isValid()
+                && weatherLists != null
+                && weatherLists[0] != null
+                && weatherLists[0].isValid() ){
+            return true;
+        }
+        return false;
+    }
 }

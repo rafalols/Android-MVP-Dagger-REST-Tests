@@ -3,6 +3,7 @@ package eu.rafalolszewski.simplyweather.views.fragments;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import org.parceler.Parcels;
 
 import javax.inject.Inject;
 
@@ -28,7 +31,7 @@ import eu.rafalolszewski.simplyweather.views.list_adapter.FiveDaysWeatherListAda
 /**
  * Created by rafal on 04.03.16.
  */
-public class WeatherBodyFragment extends Fragment implements WeatherViewInterface{
+public class WeatherBodyFragment extends Fragment implements WeatherFragmentInterface {
 
     private static final String TAG = "WeatherBodyFragment";
 
@@ -143,6 +146,11 @@ public class WeatherBodyFragment extends Fragment implements WeatherViewInterfac
 
         listAdapter.setWeatherData(weatherFiveDaysData);
         listAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setInfoToCurrentWeatherContainer(String info) {
+        //TODO
     }
 
 }

@@ -29,6 +29,7 @@
     <string name="error_get_fivedays_weather">Can\'t get weather forecast</string>
     <string name="contentdesc_current_location">Current location</string>
     <string name="cant_get_position">Can\'t get current position</string>
+    <string name="choose_city_or_current_position">Select city or check weather for your current position</string>
     <string-array name="pref_temperature_unit_titles">
         <item>Celsius</item>
         <item>Kelvin</item>
