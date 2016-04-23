@@ -65,7 +65,7 @@ public class ActivityModule {
     @Provides
     @PerActivity
     StringsProvider providesStringProvider(SharedPreferences sharedPreferences){
-        return new StringsProvider(sharedPreferences);
+        return new StringsProvider(sharedPreferences, activity);
     }
 
     @Provides

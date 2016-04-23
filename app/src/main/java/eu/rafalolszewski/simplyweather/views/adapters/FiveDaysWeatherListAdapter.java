@@ -74,8 +74,7 @@ public class FiveDaysWeatherListAdapter extends BaseAdapter{
         TextView small_value = (TextView) view.findViewById(R.id.small_value);
         TextView temp = (TextView) view.findViewById(R.id.temp);
 
-//        TODO
-//        hourLabel.setText(stringsProvider.getHourLabel(data.date));
+        hourLabel.setText(stringsProvider.getHourLabel(data.date));
         hour.setText(stringsProvider.getHour(data.date));
 
         image.setImageResource(imageMapper.getImageResourceId(data.weather[0].image));

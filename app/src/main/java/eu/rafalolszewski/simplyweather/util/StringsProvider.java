@@ -1,17 +1,16 @@
 package eu.rafalolszewski.simplyweather.util;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import eu.rafalolszewski.simplyweather.model.PlaceCords;
+import eu.rafalolszewski.simplyweather.R;
 import eu.rafalolszewski.simplyweather.views.activities.SettingsActivity;
 
 /**
@@ -19,12 +18,17 @@ import eu.rafalolszewski.simplyweather.views.activities.SettingsActivity;
  */
 public class StringsProvider {
 
+    private static final String TAG = "StringsProvider" ;
     public static final String[] DIRECTIONS_SHORT = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
+    public static final int[] WEEKDAYS = {R.string.monday, R.string.tuesday, R.string.wednesday, R.string.thursday, R.string.friday, R.string.saturday, R.string.sunday};
 
     private SharedPreferences sharedPreferences;
 
-    public StringsProvider(SharedPreferences sharedPreferences) {
+    private Context context;
+
+    public StringsProvider(SharedPreferences sharedPreferences, Context context) {
         this.sharedPreferences = sharedPreferences;
+        this.context = context;
     }
 
     public static String latOrLongToString(double latOrLong){
@@ -129,15 +133,36 @@ public class StringsProvider {
      */
     public String getHour(long dateLong){
         Date date = new Date(dateLong * 1000L);
-        return new SimpleDateFormat("HH", Locale.US).format(date) + "h";
+        return new SimpleDateFormat("H", Locale.US).format(date) + ":00";
     }
 
-    public String getHourLabel(long dateLong) {
-        Date currentDate = new Date();
-        DateTime dateTime = new DateTime(dateLong * 1000L);
-        DateTime currentDateTime = new DateTime(new SimpleDateFormat("dd/MMM/yyyy HH:mm", Locale.US).format(currentDate));
-        int days = Days.daysBetween(dateTime, currentDateTime).getDays();
-        //TODO
-        return null;
+    public String getHourLabel(long date) {
+        int daysDifference = getDaysDifferenceFromCurrentDate(date);
+
+        switch (daysDifference){
+            case 0:
+                //Today
+                return context.getString(R.string.today);
+            case 1:
+                //Tomorrow
+                return context.getString(R.string.tomorrow);
+            default:
+                //Get weekday
+                return getDateString(date);
+        }
+    }
+
+    private String getDateString(long date) {
+        //Get weekday
+        DateTime dateTime = new DateTime(date * 1000L);
+        int dayOfWeek = dateTime.getDayOfWeek();
+        int dayOfWeekStringResource = WEEKDAYS[dayOfWeek];
+        return context.getString(dayOfWeekStringResource);
+    }
+
+    private int getDaysDifferenceFromCurrentDate(long dateTo) {
+        DateTime dateCurrent = new DateTime();
+        DateTime dateEnd = new DateTime(dateTo * 1000L);
+        return dateEnd.getDayOfYear() - dateCurrent.getDayOfYear();
     }
 }

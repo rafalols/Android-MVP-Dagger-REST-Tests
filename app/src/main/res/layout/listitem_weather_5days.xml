@@ -11,7 +11,7 @@
 
         <TextView
             android:id="@+id/hour_label"
-            android:text="12th"
+            android:text="Tomorrow"
             style="@style/list_label"
             />
 
