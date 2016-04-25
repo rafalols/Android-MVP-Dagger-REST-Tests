@@ -139,9 +139,14 @@ public class MainPresenter implements MainPresenterInterface{
             //Last search was current place
             getCurrentPositionWeather();
         }else{
-            //Last search was city from google searcher
             PlaceCords placeCords = preferencesManager.getLastPlaceCords();
-            if (placeCords != null) callApiForWeatherData(placeCords);
+            if (placeCords != null) {
+                //Last search was city from google searcher
+                callApiForWeatherData(placeCords);
+            }else{
+                //There wasn't any search in history. Check weather for current position
+                getCurrentPositionWeather();
+            }
         }
     }
 

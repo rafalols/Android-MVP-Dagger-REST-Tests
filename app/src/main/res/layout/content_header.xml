@@ -33,5 +33,16 @@
 
     </FrameLayout>
 
+    <ImageButton
+        android:id="@+id/button_settings"
+        android:src="@drawable/ic_settings_24dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="8dp"
+        android:background="@null"
+        android:contentDescription="@string/contentdesc_current_location"
+
+        />
+
 
 </LinearLayout>

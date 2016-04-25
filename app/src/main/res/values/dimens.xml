@@ -20,6 +20,7 @@
     <dimen name="list_temp_textsize">28sp</dimen>
     <dimen name="list_image_width">65dp</dimen>
     <dimen name="list_image_height">48dp</dimen>
+    <dimen name="current_icon_left_padding">30dp</dimen>
 
 
     <item name="progressbar_alpha" type="dimen" format="float">0.5</item>

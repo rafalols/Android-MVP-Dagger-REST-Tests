@@ -41,8 +41,6 @@ public class MainActivity extends BaseActivity implements MainActivityInterface 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         setupInjection();
 
@@ -95,6 +93,11 @@ public class MainActivity extends BaseActivity implements MainActivityInterface 
         mainPresenter.getCurrentPositionWeather();
     }
 
+    @OnClick(R.id.button_settings)
+    public void settingsButtonClick(){
+        startSettingsActivity();
+    }
+
     @NonNull
     private AutocompleteFilter createAutocompleteFilter() {
         // Create filter to search only cities
@@ -137,12 +140,16 @@ public class MainActivity extends BaseActivity implements MainActivityInterface 
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
+            startSettingsActivity();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startSettingsActivity() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     @Override

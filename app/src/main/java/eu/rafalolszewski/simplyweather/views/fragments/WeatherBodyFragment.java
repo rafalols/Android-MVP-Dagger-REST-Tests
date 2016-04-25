@@ -33,7 +33,7 @@ public class WeatherBodyFragment extends Fragment implements WeatherFragmentInte
     private static final String TAG = "WeatherBodyFragment";
 
     @Bind(R.id.container_current_weather)
-    RelativeLayout currentWeatherContainer;
+    View currentWeatherContainer;
 
     @Bind(R.id.listview)
     ListView listView;
