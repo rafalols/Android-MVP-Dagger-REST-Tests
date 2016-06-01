@@ -46,8 +46,8 @@ public class SharedPreferencesManagerTest {
     public void setupComponents() throws Exception{
         MockitoAnnotations.initMocks(this);
 
-        sharedPreferencesManager = new SharedPreferencesManager(sharedPreferences, gson);
         when(sharedPreferences.edit()).thenReturn(editor);
+        sharedPreferencesManager = new SharedPreferencesManager(sharedPreferences, gson);
         testData = getTestWeatherData();
         mockTestPlace();
     }

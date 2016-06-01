@@ -1,6 +1,5 @@
 package eu.rafalolszewski.simplyweather.presenter;
 
-import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -8,19 +7,22 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.parceler.Parcels;
 import org.powermock.api.mockito.PowerMockito;
+
+import java.io.IOException;
 
 import eu.rafalolszewski.simplyweather.api.OpenWeatherApi;
 import eu.rafalolszewski.simplyweather.model.PlaceCords;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherFiveDaysData;
 import eu.rafalolszewski.simplyweather.util.CurrentLocationProvider;
+import eu.rafalolszewski.simplyweather.util.FileHelper;
 import eu.rafalolszewski.simplyweather.util.SharedPreferencesManager;
 import eu.rafalolszewski.simplyweather.views.activities.MainActivity;
 import eu.rafalolszewski.simplyweather.views.fragments.WeatherFragmentInterface;
@@ -56,8 +58,12 @@ public class MainPresenterTest {
 
     private MainPresenter mainPresenter;
 
+    WeatherCurrentData currentData;
+
+    WeatherFiveDaysData fiveDaysData;
+
     @Before
-    public void setupPresenter(){
+    public void setupPresenter() throws Exception{
         MockitoAnnotations.initMocks(this);
 
         PowerMockito.mockStatic(Log.class);
@@ -66,6 +72,24 @@ public class MainPresenterTest {
         mainPresenter.setViewInterface(weatherView);
 
         mockTestPlace();
+        getTestData();
+    }
+
+    private void getTestData() throws Exception {
+        currentData = getCurrentData();
+        fiveDaysData = getFiveDaysData();
+    }
+
+    private WeatherFiveDaysData getFiveDaysData() throws IOException {
+        String fiveDaysData = FileHelper.readJsonFile("src/main/assets/test_jsons/fivedaysweather.json");
+        Gson gson =  new Gson();
+        return gson.fromJson(fiveDaysData, WeatherFiveDaysData.class);
+    }
+
+    private WeatherCurrentData getCurrentData() throws Exception{
+        String currentWeatherJson = FileHelper.readJsonFile("src/main/assets/test_jsons/currentweather.json");
+        Gson gson =  new Gson();
+        return gson.fromJson(currentWeatherJson, WeatherCurrentData.class);
     }
 
     private void mockTestPlace() {
@@ -114,22 +138,20 @@ public class MainPresenterTest {
 
     @Test
     public void onGetCurrentWeatherTest(){
-        WeatherCurrentData weather = new WeatherCurrentData();
-        mainPresenter.onGetCurrentWeather(weather);
+        mainPresenter.onGetCurrentWeather(currentData);
 
         verify(weatherView).setCurrentWeatherProgressIndicator(false);
 
-        verify(weatherView).refreshCurrentWeather(weather);
+        verify(weatherView).refreshCurrentWeather(currentData);
     }
 
     @Test
     public void onGetFiveDaysWeatherTest(){
-        WeatherFiveDaysData weather = new WeatherFiveDaysData();
-        mainPresenter.onGetFiveDaysWeather(weather);
+        mainPresenter.onGetFiveDaysWeather(fiveDaysData);
 
         verify(weatherView).setListProgressIndicator(false);
 
-        verify(weatherView).refreshFiveDaysWeather(weather);
+        verify(weatherView).refreshFiveDaysWeather(fiveDaysData);
     }
 
     @Test

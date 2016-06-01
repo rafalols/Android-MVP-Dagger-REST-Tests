@@ -36,7 +36,6 @@ public class WeatherCurrentData{
 
     @Override
     public String toString() {
-        //TODO: Napisać ładną metodę toString()
         if (cityName == null || measurements == null) return "";
         return "name = " + cityName + ", temp = " + measurements.temp;
     }

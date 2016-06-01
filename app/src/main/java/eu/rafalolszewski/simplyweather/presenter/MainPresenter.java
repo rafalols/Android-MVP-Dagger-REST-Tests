@@ -2,7 +2,6 @@ package eu.rafalolszewski.simplyweather.presenter;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -11,7 +10,6 @@ import com.google.android.gms.location.places.Place;
 
 import org.parceler.Parcels;
 
-import eu.rafalolszewski.simplyweather.R;
 import eu.rafalolszewski.simplyweather.api.OpenWeatherApi;
 import eu.rafalolszewski.simplyweather.model.PlaceCords;
 import eu.rafalolszewski.simplyweather.model.openweather.WeatherCurrentData;
@@ -107,7 +105,6 @@ public class MainPresenter implements MainPresenterInterface{
 
 
     private boolean checkInSavedState(Bundle savedInstanceState) {
-        Log.d(TAG, "checkInSavedState: ");
         if (savedInstanceState != null){
             weatherCurrentData = Parcels.unwrap(savedInstanceState.getParcelable(SAVEDSTATE_CURRENT_WEATHER));
             weatherFiveDaysData = Parcels.unwrap(savedInstanceState.getParcelable(SAVEDSTATE_FIVEDAYS_WEATHER));
@@ -121,7 +118,6 @@ public class MainPresenter implements MainPresenterInterface{
     }
 
     private void checkAndSetLastResultFromSharedPreference() {
-        Log.d(TAG, "checkAndSetLastResultFromSharedPreference: ");
         WeatherCurrentData weatherCurrentData = preferencesManager.loadObjectFromJson
                 (SharedPreferencesManager.JSON_CURRENTWEATHER, WeatherCurrentData.class);
         WeatherFiveDaysData weatherFiveDaysData = preferencesManager.loadObjectFromJson
@@ -134,7 +130,6 @@ public class MainPresenter implements MainPresenterInterface{
     }
 
     private void refreshLastSearch() {
-        Log.d(TAG, "refreshLastSearch: ");
         if (preferencesManager.getBoolean(SharedPreferencesManager.LAST_SEARCH_WAS_CURRENT_PLACE)){
             //Last search was current place
             getCurrentPositionWeather();
@@ -152,7 +147,6 @@ public class MainPresenter implements MainPresenterInterface{
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "onDestroy: ");
         if (weatherCurrentData != null && weatherFiveDaysData != null) {
             preferencesManager.saveObjectAsJson(weatherCurrentData, SharedPreferencesManager.JSON_CURRENTWEATHER);
             preferencesManager.saveObjectAsJson(weatherFiveDaysData, SharedPreferencesManager.JSON_FIVEDAYSWEATHER);
